@@ -22,19 +22,15 @@
 
 ## 2. Firebaseのプロジェクト作成
 
-Firebaseのコンソールから新しいプロジェクトを作成する
+Firebaseの[コンソール](https://console.firebase.google.com/u/0/)から新しいプロジェクトを作成する
 
-※プロジェクト名を設定して、作成でOK
-
-<a>https://console.firebase.google.com/u/0/</a>
-
-作成完了後に「ウェブアプリにFirebaseを追加」（</>のマーク）をクリックし、[アプリのニックネーム]を入力
+作成後、「ウェブアプリにFirebaseを追加」（</>のマーク）をクリックし、[アプリのニックネーム]を入力
 
 var firebaseConfig = {...}をコピーして、1. でダウンロードした中にあるfirebaseConfig.jsに張り付ける
 
-作成が完了したら、開発 > Realtime Databaseへすすみ、「データベース」を作成（ロックモードで作成でOK）
+開発 > Realtime Databaseへすすみ、「データベース」を作成（ロックモードで作成でOK）
 
-作成後、「ルール」タブに移動し、1. でダウンロードした中にあるrule.txtの内容を貼りつける
+作成後、「ルール」タブに移動し、1. でダウンロードした中にあるrule.txtの内容を貼りつけて、「公開」
 
 ## 3. Node.jsのインストール
 
