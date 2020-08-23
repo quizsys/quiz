@@ -8,7 +8,7 @@
 
 
 # 使い方
-1. Firebaseのプロジェクト作成
+1. [Firebaseのプロジェクト作成](#1-%E3%82%BD%E3%83%BC%E3%82%B9%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89)
 1. ソースのダウンロード
 1. Node.jsのインストール
 1. プロジェクトのデプロイ
@@ -80,7 +80,7 @@ firebase deploy
 === Deploying to 'xxxxx'...
 ....
 +  Deploy complete!
-Hosting URL: https://xxxxx.web.app ←これがサイトのURL
+Hosting URL: https://xxx.web.app ←これがサイトのURL
 ```
 
 ## 5. クイズ編集用のユーザを登録
@@ -89,11 +89,11 @@ firebaseコンソールから「Authentication」に進む
 
 「Sign-in method」タブから「メール」を有効化
 
-「USers」にて「ユーザーを追加」で適当なメールアドレスとパスワードを登録
+「Users」にて「ユーザーを追加」で適当なメールアドレスとパスワードを登録
 
 
 ## 6. クイズを編集
-<a>https://xxxxx.web.app/generate.html</a>にアクセスし、5. のユーザーでログイン。
+<a>https://xxx.web.app/generate.html</a>にアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクト名によって可変）
 
 クイズの問題文などを編集し、「確定」ボタンをクリック。
 
