@@ -1,0 +1,98 @@
+.btn-top{
+  width:80%;
+  margin-bottom: 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size : 3vw;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+/*
+  app
+*/
+.error{
+  color: red
+}
+
+
+/*
+result
+*/
+.select{
+  border : solid 2px red;
+}
+.btn-que{
+  width: 20vw;
+  height: 10vw;
+
+}
+
+.contents{
+  text-align:center;
+}
+input{
+  width: 80%;
+
+}
+.btn-ans{
+  width:100%;
+  font-size: 1.5vw;
+}
+
+.ans-list{
+  font-size:1.5vw;
+}
+
+
+
+/*レスポンシブルデザイン
+  画面幅が400px以下の時、上書き*/
+@media screen and (max-width:600px){
+  .btn-top{
+    font-size : 5vw;
+  }
+}
+
+
+
+/* フッターの固定 */
+div#footer-fixed
+{
+    position: fixed;            /* フッターの固定 */
+    bottom: 0px;                /* 位置(下0px) */
+    left: 0px;                  /* 位置(左0px) */
+    height: 60px;              /* 縦幅110px(bkより小さく設定) */
+    width: 50%;                /* 横幅100%　*/
+    left:50%;
+}
+
+div#footer-bk
+{
+	/* background-color:#444; */
+  	background-color:#bcbcbc;     /* 背景色(黒) */
+	/* padding:0px 0 20px;       /* 上0px、下20pxをあける */
+	height:60px;              /* 縦の高さ110px */
+	width:100%;                /* 横の幅を100% */
+}
+
+
+/* フッターの固定 */
+div#footer-fixed2
+{
+    position: fixed;            /* フッターの固定 */
+    bottom: 0px;                /* 位置(下0px) */
+    left: 0px;                  /* 位置(左0px) */
+    height: 60px;              /* 縦幅110px(bkより小さく設定) */
+    width: 100%;                /* 横幅100%　*/
+    /* left:100%; */
+}
+
+div#footer-bk2
+{
+	/* background-color:#444; */
+  	background-color:#bcbcbc;     /* 背景色(黒) */
+	padding:0px 0 20px;       /* 上0px、下20pxをあける
+	height:60px;              /* 縦の高さ110px */
+	width:100%;                /* 横の幅を100% */
+}

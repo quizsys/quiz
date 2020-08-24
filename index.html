@@ -1,9 +1,104 @@
-<html>
+<HTML>
   <head>
-    <meta charset='utf-8'>
-    <title>test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.js"></script>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.css">
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
+  	<!-- sweetAlert IE11,Android-->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <script src="/__/firebase/init.js"></script>
+    <!-- <script src="init.js"></script> -->
+
+
+
+
+    <title>駅伝クイズ</title>
+    <script type="text/javascript" src="js/main-app.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
   </head>
+
   <body>
-    this is git test!
+    <div id="app">
+
+      <div id="login-contents" class="contents" v-bind:class="{ hide: (isHideNum != 1) }">
+          <h1 style="color:red">クイズ大会！！</h1>
+          <h2>お名前を入力してください</h2>
+          <input type="text" placeholder="名前を入力" style="height:10vw" v-model="name"></input>
+          <div class="error" v-if="error.require">必須項目です。</div>
+          <div class="error" v-if="error.tooLong">長すぎます。</div>
+          <br>
+          <button class="btn btn-primary btn-top" @click="confirm()">参加する</button>
+      </div>
+
+      <div id="wait-contents" class="contents" v-bind:class="{ hide: (isHideNum != 2) }">
+          <h3>待機中。。</h3>
+      </div>
+
+
+      <div id="select-contents" class="contents" v-bind:class="{ hide: (isHideNum != 3) }">
+          <h2>Q.{{ quizNum }}</h2>
+          <h3 v-html="quizContents"></h3>
+          <br>
+          <button class="btn btn-outline-primary waves-effect btn-top" @click="selectAns(0)">{{ansList[0]}}</button><br />
+          <button class="btn btn-outline-danger waves-effect btn-top" @click="selectAns(1)">{{ansList[1]}}</button><br />
+          <button class="btn btn-outline-default waves-effect btn-top" @click="selectAns(2)">{{ansList[2]}}</button><br />
+          <button class="btn btn-outline-secondary waves-effect btn-top" @click="selectAns(3)">{{ansList[3]}}</button>
+      </div>
+
+
+      <div id="select-contents" class="contents" v-bind:class="{ hide: (isHideNum != 4) }">
+          <h2>回答をおくりました！</h2>
+      </div>
+
+
+      <div id="select-contents" class="contents" v-bind:class="{ hide: (isHideNum != 6) }">
+          <h2>時間切れです。。。</h2>
+      </div>
+
+      <div id="result-contents" class="contents" v-bind:class="{ hide: (isHideNum != 5) }">
+
+        <div v-bind:class="{ hide: isCorrect}">
+          <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: block;">
+            <span class="swal2-x-mark swal2-animate-x-mark">
+              <span class="swal2-x-mark-line-left"></span>
+              <span class="swal2-x-mark-line-right"></span>
+            </span>
+          </div>
+          <h2 style="color:red" v-bind:class="{ hide: isDoit}">不正解！</h2>
+          <div v-bind:class="{ hide: isDoit}">正解は<br />「{{correctAnswer}}」<br />でした！！</div>
+        </div>
+
+        <div v-bind:class="{ hide: !isCorrect}">
+          <div class="swal2-icon swal2-success swal2-animate-success-icon" style="display: block;">
+            <div class="swal2-success-circular-line-left" style="background: rgb(255, 255, 255);"></div>
+            <span class="swal2-success-line-tip swal2-animate-success-line-tip"></span>
+            <span class="swal2-success-line-long swal2-animate-success-line-long"></span>
+            <div class="swal2-success-ring"></div>
+            <div class="swal2-success-fix" style="background: rgb(255, 255, 255);"></div>
+            <div class="swal2-success-circular-line-right" style="background: rgb(255, 255, 255);"></div>
+          </div>
+          <h2 style="color:green" v-bind:class="{ hide: isDoit}">正解！</h2>
+        </div>
+      </div>
+    </div>
+
   </body>
-</html>
+
+  <script type="text/javascript" src="js/app.js"></script>
+
+  <script>
+    init();
+  </script>
+
+</HTML>

@@ -1,0 +1,202 @@
+<HTML>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.js"></script>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.css">
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
+  	<!-- sweetAlert IE11,Android-->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
+
+
+    <script src="/__/firebase/init.js"></script>
+    <!-- <script src="init.js"></script> -->
+
+
+    <title>クイズ編集ページ</title>
+    <script type="text/javascript" src="js/main-generate.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+      html {
+      	overflow: auto;
+      }
+      body {
+      	overflow: hidden;
+      	min-width: 900px;
+      }
+      .btn-kind{
+        width: 30vw;
+        height: 10vw;
+        font-size: 4vw;
+      }
+
+      .btn-updown{
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+    </style>
+
+    <script>
+
+    </script>
+
+  </head>
+
+    <body>
+      <div id="app">
+
+        <div id="wait-contents" class="contents" v-bind:class="{ hide: (isHideNum != 0) }">
+          <h1>処理中です。1秒ほどお待ちください。</h1>
+        </div>
+
+        <div id="login-contents" class="contents" v-bind:class="{ hide: (isHideNum != 1) }">
+          <h1 style="color:red">クイズジェネレータ</h1>
+          <h2>ID/パスワードを入力してください</h2>
+          <input type="text" placeholder="ID（メールアドレス）" v-model="name"></input>
+          <div class="error" v-if="error.requireName">必須項目です。</div>
+          <br>
+          <input type="password" placeholder="パスワード" v-model="password"></input>
+          <div class="error" v-if="error.requirePassword">必須項目です。</div>
+          <div class="error" v-if="error.missLoginInfo">ログイン情報が正しくありません</div>
+          <br>
+          <button class="btn btn-primary btn-top" @click="confirm()">ログインする</button>
+
+        </div>
+
+
+
+
+        <div id="main-contents" class="contents"  v-bind:class="{ hide: (isHideNum != 2) }">
+          <h1 style="color:red">クイズジェネレータ</h1>
+          <br>
+          <div class="ex-title">①クイズの内容を設定</div>
+          <div v-for="(quiz, index) in json" style="background-color:aliceblue">
+              <br />
+
+              <div class="row">
+                <div class="col-xs-2">ジャンル</div>
+                <div class="col-xs-8">
+                     <input v-model="quiz.genre" style="width:100%" placeholder="ジャンルを入力"></input>
+                </div>
+                <div class="col-xs-1" v-if="(index!=0)">
+                  <button class="btn btn-danger" v-bind:id="index" @click="deleteQuestion($event)">×</button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-2">問題</div>
+                <div class="col-xs-8">
+                     <textarea v-model="quiz.quizContents" style="width:100%" placeholder="問題文を入力"></textarea>
+                </div>
+                <div class="col-xs-1">
+                  正解
+                </div>
+              </div>
+
+              <span v-for="(ans, index2) in quiz.ansList">
+                <div class="row">
+                  <div class="col-xs-2">選択肢{{index2+1}}</div>
+                  <div class="col-xs-8">
+                       <input v-model="quiz.ansList[index2]" style="width:100%" placeholder="選択肢を入力"></input>
+                  </div>
+                  <div class="col-xs-1">
+                    <input type="radio" v-bind:name="'collectAnserRadio'+index" v-bind:value="index2" v-model="quiz.correctAnswer"></input>
+                  </div>
+                </div>
+              </span>
+
+              <div class="row">
+                <div class="col-xs-2">解説</div>
+                <div class="col-xs-8">
+                   <textarea v-model="quiz.explain" style="width:100%" placeholder="解説を入力"></textarea>
+                </div>
+
+                <div class="col-xs-1">
+                  <button class="btn btn-primary btn-updown" v-bind:id="index" @click="upQuestion($event)"   v-if="(index!=0)">↑</button>
+                  <button class="btn btn-primary btn-updown" v-bind:id="index" @click="downQuestion($event)" v-if="(index!=(json.length-1))">↓</button>
+                </div>
+              </div>
+
+            <hr />
+          </div>
+          <button class="btn btn-warning" @click="addQuestion">問題追加</button>
+          <br /><br />
+
+          <div class="ex-title">②表示を確認</div>
+          <button class="btn btn-primary" @click="preView">プレビュー</button>
+
+          <div class="ex-title">③内容を確定</div>
+            <div class="error" v-if="isCommit">
+                変更を確定しました。<br>
+                下記のURLから確認してください<br>
+                ◆出題者サイト：<a v-bind:href="resultURL" target="_blank">{{resultURL}}</a><br>
+                ◆回答者サイト：<a v-bind:href="appURL" target="_blank">{{appURL}}</a>
+            </div>
+            <button class="btn btn-danger" @click="commit">確定</button>
+          </div>
+
+
+
+
+      <div id="section-contents" class="contents" v-bind:class="{ hide: (isHideNum != 3) }">
+        <h1 style="color:red">ジャンルを選択</h1>
+        <br>
+        <span v-for="(kind, index) in json">
+          <button class="btn btn-kind" v-bind:id="index" @click="goQuiz($event)" >{{kind.genre}}</button>
+        </span>
+      </div>
+
+
+        <div id="question-contents" class="contents" v-bind:class="{ hide: (isHideNum != 4) }">
+          <h1>Q.{{ quizNum }}</h1>
+          <h2 v-html="quizContents"></h2>
+          <br>
+              <button class="btn btn-outline-primary waves-effect btn-top" style="width:90%">{{ansList[0]}}</button>
+              <button class="btn btn-outline-danger waves-effect btn-top" style="width:90%">{{ansList[1]}}</button>
+              <button class="btn btn-outline-default  waves-effect btn-top" style="width:90%">{{ansList[2]}}</button>
+              <button class="btn btn-outline-secondary  waves-effect btn-top" style="width:90%">{{ansList[3]}}</button>
+
+              <br />
+
+        </div>
+
+
+        <div id="footer-fixed2" class="contents" v-bind:class="{ hide: (isHideNum < 3)}">
+          <div id="footer-bk2">
+            <div id="text-box">
+              <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8">
+                  <button class="btn btn-primary btn-top" @click="back">トップへ戻る</button>
+                </div>
+                <div class="col-xs-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </body>
+
+    <script type="text/javascript" src="js/generate.js"></script>
+
+
+
+  <script>
+    (window.onload =
+      setTimeout(init, 1000)
+    )
+  </script>
+
+</HTML>

@@ -1,0 +1,265 @@
+<HTML>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.js"></script>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.css">
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
+  	<!-- sweetAlert IE11,Android-->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
+
+
+    <script src="/__/firebase/init.js"></script>
+    <!-- <script src="init.js"></script> -->
+
+
+    <link href="css/jquery.toast.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.toast.js"></script>
+
+    <title>駅伝クイズ</title>
+    <!-- <script type="text/javascript" src="main.js"></script> -->
+    <script type="text/javascript" src="js/main-result.js"></script>
+    <!-- <script type="text/javascript" src="questions.js"></script> -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+      html {
+      	overflow: auto;
+      }
+      body {
+      	overflow: hidden;
+      	min-width: 900px;
+      }
+      .btn-kind{
+        width: 30vw;
+        height: 10vw;
+        font-size: 4vw;
+      }
+    </style>
+
+    <script>
+
+    </script>
+
+  </head>
+
+    <body>
+      <div id="app">
+
+
+        <div id="wait-contents" class="contents" v-bind:class="{ hide: (isHideNum != 0) }">
+          <h1>処理中です。1秒ほどお待ちください。</h1>
+        </div>
+
+
+        <div id="login-contents" class="contents" v-bind:class="{ hide: (isHideNum != 8) }">
+          <h1 style="color:red">クイズ大会 主催者ログイン</h1>
+          <h2>ID/パスワードを入力してください</h2>
+          <input type="text" placeholder="ID（メールアドレス）" v-model="name"></input>
+          <div class="error" v-if="error.requireName">必須項目です。</div>
+          <br>
+          <input type="password" placeholder="パスワード" v-model="password"></input>
+          <div class="error" v-if="error.requirePassword">必須項目です。</div>
+          <div class="error" v-if="error.missLoginInfo">ログイン情報が正しくありません</div>
+          <br>
+          <button class="btn btn-primary btn-top" @click="confirm()">ログインする</button>
+
+        </div>
+
+
+        <div id="wait-contents" class="contents" v-bind:class="{ hide: (isHideNum != 1) }">
+          <h1 style="color:red">クイズ大会！！</h1>
+          <h2>下記のQRコードからログインしてください</h2>
+          <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-5">
+              <img src="img/qr-code.png" width="60%">
+            </div>
+            <div class="col-xs-5" v-html="loginMessage" style="text-align:left; font-size:2vw;color: green;"></div>
+          </div>
+
+
+        </div>
+
+
+        <div id="section-contents" class="contents" v-bind:class="{ hide: (isHideNum != 2) }">
+          <h1 style="color:red">ジャンルを選択</h1>
+          <br>
+          <span v-for="(kind, index) in kindList">
+            <button class="btn btn-kind" v-bind:class="{ 'btn-outline-default' : kind.disable, 'btn-default' : !kind.disable}" v-bind:disabled="kind.disable" v-bind:id="index" @click="goQuiz($event)" >{{kind.name}}</button>
+          </span>
+          </div>
+
+
+
+
+          <div id="question-title-contents" class="contents" v-bind:class="{ hide: (isHideNum != 3) }">
+            <div style="padding-top: 10vw;font-size:20vw;">
+              <span style="opacity:0" id="questionTitle">{{questionTitle}}</span>
+            </div>
+          </div>
+
+
+
+
+        <div id="question-contents" class="contents" v-bind:class="{ hide: (isHideNum != 4) }">
+          <h1>Q.{{ quizNum }}</h1>
+          <h2 v-html="quizContents"></h2>
+          <br>
+          <div class="row">
+            <div class="col-xs-6">
+              <button class="btn btn-outline-primary waves-effect btn-top" style="width:90%">{{ansList[0]}}</button>
+              <button class="btn btn-outline-danger waves-effect btn-top" style="width:90%">{{ansList[1]}}</button>
+              <button class="btn btn-outline-default  waves-effect btn-top" style="width:90%">{{ansList[2]}}</button>
+              <button class="btn btn-outline-secondary  waves-effect btn-top" style="width:90%">{{ansList[3]}}</button>
+            </div>
+            <div class="col-xs-6" style="padding-left: 0px;">
+              <div id="index" style="width:100%;position: absolute;">
+                <!-- <img id="top-img" v-bind:src="'img/' + questionId + '.png'" width="100%"> -->
+                  <img id="top-img" src="img/qr-code.png" width="60%">
+              </div>
+
+              <div id="contents"  class="hide" style="width:100%;height:50vw;position: absolute;background-color:gray"></div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+        <div id="timeup-contents" class="contents" v-bind:class="{ hide: (isHideNum != 5) }">
+            <h2>回答受付を終了しました！</h2>
+            <br />
+            <hr />
+
+            <div class="row">
+              <div class="col-xs-3">
+                <button class="btn btn-outline-primary waves-effect btn-ans">{{ansList[0]}}</button><br />
+                <div v-for="answer in answerList[0]" class="ans-list">{{answer}}</div>
+              </div>
+                <div class="col-xs-3">
+                <button class="btn btn-outline-danger waves-effect btn-ans">{{ansList[1]}}</button><br />
+                <div v-for="answer in answerList[1]" class="ans-list">{{answer}}</div>
+              </div>
+                <div class="col-xs-3">
+                <button class="btn btn-outline-default waves-effect btn-ans">{{ansList[2]}}</button><br />
+                <div v-for="answer in answerList[2]" class="ans-list">{{answer}}</div>
+              </div>
+                <div class="col-xs-3">
+                <button class="btn btn-outline-secondary waves-effect btn-ans">{{ansList[3]}}</button><br />
+                <div v-for="answer in answerList[3]" class="ans-list">{{answer}}</div>
+              </div>
+
+            </div>
+        </div>
+
+
+        <div id="answer-contents" class="contents" v-bind:class="{ hide: (isHideNum != 6) }">
+            <h2 style="text-align: left;">答えは。。。。</h2>
+            <button class="btn waves-effect btn-top"
+             v-bind:class="{ 'btn-outline-primary': isCorrectList[0],'btn-outline-danger': isCorrectList[1],
+              'btn-outline-default': isCorrectList[2], 'btn-outline-secondary': isCorrectList[3]}">
+                {{correctAnswer}}
+            </button><br />
+
+            <hr />
+            <h3>正解者</h3>
+            <span v-for="winner in winnerList" style="font-size:25px">{{winner}}、</span>
+            <br /><br /><br />
+
+            <div style="border: solid 2px gray;">
+              <h3>解説</h3>
+              <div style="font-size:1.5vw" v-html="explain"></div>
+            </div>
+        </div>
+
+
+
+
+        <div id="result-contents" class="contents" v-bind:class="{ hide: (isHideNum != 7) }">
+          <h1>結果発表！！！</h1>
+          <button class="btn btn-primary btn-top" @click="showResult()" v-bind:class="{ hide: !isHideResult}">結果を表示</button>
+          <div v-bind:class="{ hide: isHideResult}">
+            <div class="row">
+              <div class="col-xs-4"></div>
+              <div class="col-xs-6">
+                <div v-for="result in resultList" style="font-size:25px; text-align:left">
+                  {{result.count}}問正解: {{result.name}}<br />
+                </div>
+              </div>
+              <div class="col-xs-2"></div>
+            </div>
+            <br />
+            <h1>おめでとう！！！</h1>
+          </div>
+
+        </div>
+
+
+        <div id="footer-fixed">
+          <div id="footer-bk">
+            <div class="row" style="height:100%">
+
+              <div class="col-xs-2" v-bind:class="{ hide: isIconHide6}">
+                {{ansUserCount}} / {{allUserCount}}
+              </div>
+
+              <div class="col-xs-4" v-bind:class="{ hide: isIconHide6}">
+                <h3>残り {{limitTime}} 秒<h3>
+              </div>
+              <!-- <div class="col-xs-2">
+                <button onClick="open1()" type="button" title="回答状況表示"><img src="img/a1.png" class="icon"></button>
+              </div> -->
+              <div class="col-xs-2  pull-right" v-bind:class="{ hide: isIconHide1}">
+                <button @click="checkToResultPage()" class="btn-icon" type="button" title="結果発表">結果発表</button>
+              </div>
+              <div class="col-xs-2  pull-right" v-bind:class="{ hide: isIconHide2}">
+                <button @click="toCorrectAnswer()" class="btn-icon" type="button" title="答えを表示">答えを表示</button>
+              </div>
+              <div class="col-xs-2  pull-right" v-bind:class="{ hide: isIconHide3}">
+                <button @click="toTimeUp()" class="btn-icon" type="button" title="回答結果表示">回答結果表示</button>
+              </div>
+              <div class="col-xs-2  pull-right" v-bind:class="{ hide: isIconHide4}">
+                <button @click="toHome()" class="btn-icon" type="button" title="ホームへ">ホームへ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </body>
+
+    <script type="text/javascript" src="js/result.js"></script>
+
+    <style>
+      .btn-icon{
+        /* margin-top: :10; */
+        margin-top: 5;
+        width: 80%;
+        height: 80%;
+      }
+      .icon{
+        width: 80%;
+        height: 80%;
+      }
+
+    </style>
+
+
+  <script>
+    (window.onload =
+      setTimeout(init, 1000)
+    )
+  </script>
+
+</HTML>
