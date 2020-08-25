@@ -22,15 +22,11 @@
 
 ## 2. Firebaseのプロジェクト作成
 
-Firebaseの[コンソール](https://console.firebase.google.com/u/0/)から新しいプロジェクトを作成する
+Firebaseの[コンソール](https://console.firebase.google.com/u/0/)から新しいプロジェクトを作成する（要Googleアカウント）
 
-作成後、「ウェブアプリにFirebaseを追加」（</>のマーク）をクリックし、[アプリのニックネーム]を入力
+作成後、「ウェブアプリにFirebaseを追加」（</>のマーク）をクリックし、[アプリのニックネーム]を入力、「このアプリのFirebase Hostingも設定する」にチェック入れる（ここで表示されるプロジェクトIDを控える。）
 
-var firebaseConfig = {...}をコピーして、1. でダウンロードした中にあるfirebaseConfig.jsに張り付ける
-
-開発 > Realtime Databaseへすすみ、「データベース」を作成（ロックモードで作成でOK）
-
-作成後、「ルール」タブに移動し、1. でダウンロードした中にあるrule.txtの内容を貼りつけて、「公開」
+「登録」を押下する。残りの項目は「次へ」や「コンソールに戻る」でOK。
 
 ## 3. Node.jsのインストール
 
@@ -56,13 +52,11 @@ firebase --interactive login:ci
 
 # Firebase プロジェクトを初期化
 firebase init
-
-# ※下記の質問は、ローカルでの作業ディレクトリ名を入力。ここでは「test1」とする
-? What do you want to use as your public directory? test1
-
-# 移動する
-cd test1
 ```
+
+各質問への回答内容
+
+
 
 作業ディレクトリ（test1）内のファイルをすべて、1. でダウンロードしたファイルに置き換え
 
@@ -83,7 +77,7 @@ firebaseコンソールから「Authentication」に進む
 
 「Sign-in method」タブから「メール」を有効化
 
-「Users」にて「ユーザーを追加」で適当なメールアドレスとパスワードを登録
+「Users」にて「ユーザーを追加」で適当なメールアドレスとパスワードを登録（firebaseに登録したアドレスでなくても可能）
 
 
 ## 6. クイズを編集
