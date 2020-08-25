@@ -28,6 +28,8 @@ Firebaseの[コンソール](https://console.firebase.google.com/u/0/)から新�
 
 「登録」を押下する。残りの項目は「次へ」や「コンソールに戻る」でOK。
 
+左のリストからRealtime Databaseを選択、ルールはどちらを選んでもOK。（後で書き換えるため）
+
 ## 3. Node.jsのインストール
 
 Node.jsをインストールする（インストール済みであれば不要）
