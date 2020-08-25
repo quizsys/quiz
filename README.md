@@ -80,8 +80,9 @@ firebase init
 ? Configure as a single-page app (rewrite all urls to /index.html)? (y/N)
 →N
 ```
-+  Firebase initialization complete!
-が表示されれば、完了。下記のファイルができている
+Firebase initialization complete!
+
+が表示されれば完了。下記のファイルができている
 
 ```
 my-firebase-project
@@ -104,12 +105,14 @@ Node.js command promptでデプロイ
 ```
 # デプロイコマンド
 firebase deploy
-
-=== Deploying to 'xxxxx'...
-....
-+  Deploy complete!
-Hosting URL: https://xxx.web.app ←これがサイトのURL
 ```
+
+Deploy complete!
+
+が表示されればOK
+
+Hosting URL: https://xxx.web.app と表示される（xxxの部分はプロジェクトID）。これがサイトのURL。
+
 
 ## 5. クイズ編集用のユーザを登録
 
@@ -121,7 +124,7 @@ firebaseコンソールから「Authentication」に進む
 
 
 ## 6. クイズを編集
-https://xxx.web.app/generate.htmlにアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクト名によって可変）
+https://xxx.web.app/generate.html にアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクトID）
 
 クイズの問題文などを編集し、「確定」ボタンをクリック。
 
