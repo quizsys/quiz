@@ -59,6 +59,7 @@ firebase init
 ## 各質問への回答内容
 
 ? Are you ready to proceed? (Y/n)
+
 →Y
 
 ? Which Firebase CLI features do you want to set up for this folder? 
@@ -103,7 +104,7 @@ my-firebase-project
 
 publicフォルダ内のファイルをすべて、1. でダウンロードしたファイルに置き換え
 
-database.rule.jsonを置き換える
+my-firebase-project配下のdatabase.rules.jsonを、1. でダウンロードしたdatabase.rule.jsonに置き換える
 
 Node.js command promptでデプロイ
 
