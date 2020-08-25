@@ -54,15 +54,51 @@ firebase --interactive login:ci
 firebase init
 ```
 
-各質問への回答内容
+## 各質問への回答内容
 
+? Are you ready to proceed? (Y/n)
+→Y
 
+? Which Firebase CLI features do you want to set up for this folder? 
+→「Database:」と「Hosting:」を選択（上下キーで移動し、スペースで選択）し決定（Enterキー）
 
-作業ディレクトリ（test1）内のファイルをすべて、1. でダウンロードしたファイルに置き換え
+? Please select an option: (Use arrow keys)
+→ Use an existing project を選択
 
-デプロイ
+? Select a default Firebase project for this directory: (Use arrow keys)
+→2. で作成したプロジェクトID を選択
+
+? What file should be used for Database Rules? (database.rules.json)
+→何も入力せずEnter（デフォルトでOKのため）
+
+? What do you want to use as your public directory? (public)
+→何も入力せずEnter（デフォルトでOKのため）
+
+? Configure as a single-page app (rewrite all urls to /index.html)? (y/N)
+→N
+
++  Firebase initialization complete!
+が表示されれば、完了。下記のファイルができている
 
 ```
+my-firebase-project
+│  .firebaserc
+│  .gitignore
+│  database.rules.json
+│  firebase.json
+
+└─public
+        404.html
+        index.html
+```
+
+publicフォルダ内のファイルをすべて、1. でダウンロードしたファイルに置き換え
+database.rule.jsonを置き換える
+
+Node.js command promptでデプロイ
+
+```
+# デプロイコマンド
 firebase deploy
 
 === Deploying to 'xxxxx'...
@@ -81,7 +117,7 @@ firebaseコンソールから「Authentication」に進む
 
 
 ## 6. クイズを編集
-<a>https://xxx.web.app/generate.html</a>にアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクト名によって可変）
+https://xxx.web.app/generate.htmlにアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクト名によって可変）
 
 クイズの問題文などを編集し、「確定」ボタンをクリック。
 
