@@ -1,9 +1,9 @@
 var vue = new Vue({
   el: "#app",
   data: {
+      mainTitle:"クイズ大会",
       quizNum: 1,
       quizContents: "",
-      questionId: 1,
       questionTitle: "",
       ansList:[],
       name: "",
@@ -93,10 +93,12 @@ var vue = new Vue({
       var q = vue.json[selectQuestionNum]
       this.setQuestion(this.quizNum+1, q.quizContents, q.ansList)
       this.getAnswerResult(q.correctAnswer, q.explain)
-      this.questionId = q.questionId;
 
       //画面描画
       this.isHideNum = 4;
+    },
+    toTopPage(){
+      this.isHideNum = 2;
     },
     back(){
       this.isHideNum = 2;
@@ -113,15 +115,12 @@ var vue = new Vue({
     },
     confirm(){
       //ログイン処理
-      if(0 < this.name.length && 0 < this.password.length){
-        if(login(this.name, this.password)){
-            this.isHideNum = 2;
-            waitLoginInit();
-        } else {
-          this.error.missLoginInfo = true;
-        }
-      }
+      this.error.requireName = (0 == this.name.length);
+      this.error.requirePassword = (0 == this.password.length);
 
+      if(0 < this.name.length && 0 < this.password.length){
+       login(this.name, this.password)
+      }
     },
 
     toWaitMenu(){

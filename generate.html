@@ -17,12 +17,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
 
 
-    <script src="/__/firebase/init.js"></script>
-    <!-- <script src="init.js"></script> -->
+    <script src="/__/firebase/init.js"></script> 
+  <!--  <script src="init.js"></script> -->
+
 
 
     <title>クイズ編集ページ</title>
     <script type="text/javascript" src="js/main-generate.js"></script>
+    <script type="text/javascript" src="js/common-login.js"></script>
     <link rel="stylesheet" href="css/main.css">
 
     <style>
@@ -79,7 +81,19 @@
         <div id="main-contents" class="contents"  v-bind:class="{ hide: (isHideNum != 2) }">
           <h1 style="color:red">クイズジェネレータ</h1>
           <br>
-          <div class="ex-title">①クイズの内容を設定</div>
+
+          <div class="ex-title">①クイズの大会のタイトルを設定</div>
+          <div class="row">
+            <div class="col-xs-2">タイトル</div>
+            <div class="col-xs-8">
+                 <input v-model="mainTitle" style="width:100%" placeholder="クイズ大会のタイトルを入力"></input>
+            </div>
+          </div>
+          <br>
+
+
+
+          <div class="ex-title">②クイズの内容を設定</div>
           <div v-for="(quiz, index) in json" style="background-color:aliceblue">
               <br />
 
@@ -132,10 +146,10 @@
           <button class="btn btn-warning" @click="addQuestion">問題追加</button>
           <br /><br />
 
-          <div class="ex-title">②表示を確認</div>
+          <div class="ex-title">③表示を確認</div>
           <button class="btn btn-primary" @click="preView">プレビュー</button>
 
-          <div class="ex-title">③内容を確定</div>
+          <div class="ex-title">④内容を確定</div>
             <div class="error" v-if="isCommit">
                 変更を確定しました。<br>
                 下記のURLから確認してください<br>

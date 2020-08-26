@@ -16,13 +16,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
-    <script src="/__/firebase/init.js"></script>
-    <!-- <script src="init.js"></script> -->
+    <script src="/__/firebase/init.js"></script> 
+  <!--  <script src="init.js"></script> -->
 
 
 
 
-    <title>駅伝クイズ</title>
+
+    <title>クイズ</title>
     <script type="text/javascript" src="js/main-app.js"></script>
     <link rel="stylesheet" href="css/main.css">
 
@@ -32,9 +33,9 @@
     <div id="app">
 
       <div id="login-contents" class="contents" v-bind:class="{ hide: (isHideNum != 1) }">
-          <h1 style="color:red">クイズ大会！！</h1>
+          <h1 style="color:red">{{mainTitle}}</h1>
           <h2>お名前を入力してください</h2>
-          <input type="text" placeholder="名前を入力" style="height:10vw" v-model="name"></input>
+          <input type="text" placeholder="名前を入力（10文字以内）" style="height:5vw" v-model="name"></input>
           <div class="error" v-if="error.require">必須項目です。</div>
           <div class="error" v-if="error.tooLong">長すぎます。</div>
           <br>
@@ -47,7 +48,7 @@
 
 
       <div id="select-contents" class="contents" v-bind:class="{ hide: (isHideNum != 3) }">
-          <h2>Q.{{ quizNum }}</h2>
+          <h2>Q.{{ questionNum }}</h2>
           <h3 v-html="quizContents"></h3>
           <br>
           <button class="btn btn-outline-primary waves-effect btn-top" @click="selectAns(0)">{{ansList[0]}}</button><br />

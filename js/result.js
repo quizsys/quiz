@@ -1,7 +1,8 @@
 var vue = new Vue({
   el: "#app",
   data: {
-      quizNum: 0,
+      mainTitle:"クイズ大会",
+      questionNum: 0,
       quizContents: "",
       questionTitle: "",
       ansList:[],
@@ -24,7 +25,7 @@ var vue = new Vue({
       limitTime:0,
       winnerList:[],
       answerList:[[],[],[],[]],
-      loginMessage:"",
+      loginMessage:"<br />",
       isCorrectList:[false, false, false, false],
       explain: "",
       kindList: [],
@@ -53,6 +54,9 @@ var vue = new Vue({
       // if(!this.isIconHide5) this.isIconHide5 = true;
       if(!this.isIconHide6) this.isIconHide6 = true;
     },
+    toTopPage(){
+      this.isHideNum = 1;
+    },
     toHome(){
       this.isHideNum = 2;
       this.resetIcon();
@@ -64,13 +68,7 @@ var vue = new Vue({
     confirm(){
       //ログイン処理
       if(0 < this.name.length && 0 < this.password.length){
-        if(login(this.name, this.password)){
-            this.isHideNum = 1;
-            this.loginCount = 0;
-            waitLoginInit();
-        } else {
-          this.error.missLoginInfo = true;
-        }
+        login(this.name, this.password);
       }
     },
     toTimeUp(){
@@ -109,8 +107,8 @@ var vue = new Vue({
       this.isHideNum = 7;
 
     },
-    setQuestion(quizNum, quizContents, ansList){
-      this.quizNum = quizNum;
+    setQuestion(questionNum, quizContents, ansList){
+      this.questionNum = questionNum;
       this.quizContents = quizContents;
       this.ansList = ansList;
       this.selectAnsNum = -1;
@@ -142,7 +140,7 @@ var vue = new Vue({
 
       //クイズ取得
       var q = questions[selectQuestionNum]
-      this.setQuestion(this.quizNum+1, q.quizContents, q.ansList)
+      this.setQuestion(this.questionNum+1, q.quizContents, q.ansList)
       this.getAnswerResult(q.correctAnswer, q.explain)
 
       //画面描画
@@ -164,9 +162,9 @@ var vue = new Vue({
           vue.isHideNum = 4;
           vue.countDownTimer();
           sendQuestion();
-        }, 1000)
+        }, 700)
       }
-      TweenMax.to( "#questionTitle", 2.5, {opacity: 1, ease: Circ.easeInOut, delay:0.3, onComplete:myFunc })
+      TweenMax.to( "#questionTitle", 2.0, {opacity: 1, ease: Circ.easeInOut, delay:0.3, onComplete:myFunc })
     },
     countDownTimer(){
       timerInterval = setInterval(function(){

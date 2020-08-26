@@ -4,11 +4,14 @@ const ref = database.ref('quiz').child("admin");
 const ref2 = database.ref('quiz').child("user");
 const ref3 = database.ref('quiz').child("vote");
 const ref4 = database.ref('quiz').child("master");
+const ref5 = database.ref('quiz').child("config");
 var userList = {};
 var questions = [];
 
 
-
+toastr.options = {
+  "positionClass": "toast-bottom-left"
+}
 
 function init(){
 
@@ -23,7 +26,7 @@ function init(){
   vue.isHideNum = 1;
   vue.isIconHide4 = false;
 
-
+  onceGetConfig()
   onceGetMaster();
   initQuizData();
   waitAddUser();
@@ -53,32 +56,32 @@ function loginInit(){
 }
 
 
-function waitLoginInit(){
-
-  setTimeout(function(){
-    if(!loginInit()){
-      console.log("ログイン後初期化処理:", vue.loginCount)
-      vue.loginCount++;
-      if(vue.loginCount < 3){
-        waitLoginInit();
-      }
-    }
-  }, 1000)
-}
-
-
 function onceGetMaster(){
   ref4.once('value').then(function(snapshot) {
 
-    var key = snapshot.key;
     var val = snapshot.val();
+    if(val != null){
+      questions = val
+      for(var i = 0; i<questions.length; i++){
+        vue.kindList.push({
+          name: questions[i].genre,
+          disable: false
+        })
+      }
+    }
+  })
+}
 
-    questions = val
-    for(var i = 0; i<questions.length; i++){
-      vue.kindList.push({
-        name: questions[i].genre,
-        disable: false
-      })
+
+/*
+クイズのタイトル名を取得する
+*/
+function onceGetConfig(){
+  ref5.child('mainTitle').once('value').then(function(snapshot) {
+
+    var mainTitle = snapshot.val();
+    if(mainTitle != null){
+      vue.mainTitle = mainTitle
     }
   })
 }
@@ -95,11 +98,8 @@ function waitAddUser(){
         userList[snapshot.key].count = 0;
         userList[snapshot.key].loginDateTime = getTimeStamp();
         vue.allUserCount++;
-        vue.loginMessage += userName + "さんがログインしました<br />";
-        $.toast({
-            heading: userName + 'さんがログインしました',
-            icon: 'success'
-        })
+        vue.loginMessage = userName + "さんが参加しました<br />" + vue.loginMessage;
+        toastr.success(userName + 'さんが参加しました');
       }
   	});
 }
@@ -121,10 +121,7 @@ function waitUserAnswer(){
         vue.answerList[val].push(userList[snapshot.key].name);
         vue.ansUserCount++;
         var userName = userList[snapshot.key].name;
-        $.toast({
-            heading: userName + 'さんが解答しました！',
-            icon: 'info'
-        })
+        toastr.info(userName + 'さんが解答しました！');
 
       }
   	});
@@ -198,7 +195,7 @@ function initQuizData(){
 function sendQuestion(){
 
   var q ={
-    questionNum: vue.selectQuestionNum,
+    questionNum: vue.questionNum,
     quizContents: vue.quizContents,
     ansList: vue.ansList
   }
@@ -232,40 +229,6 @@ function sendAnswer(){
 }
 
 
-/*
-----------------------------------------
-ユーザー認証
-* ログイン成功時にtrueを返す
-----------------------------------------
-*/
-
-function login(email, password){
-  var errorCode = "";
-  var user = firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-    // Handle Errors here.
-    errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode,errorMessage)
-  });
-  console.log(user.uid)
-  return (errorCode == "");
-}
-
-/*
-ログイン済み: true
-未ログイン: false
-*/
-function checkLoginStatus(){
-  return firebase.auth().currentUser != null;
-}
-
-
-
-function signOut(){
-  firebase.auth().signOut().then(()=>{
-    console.log("ログアウトしました");
-  })
-}
 
 /*
 ----------------------------------------

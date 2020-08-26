@@ -2,6 +2,7 @@ const database = firebase.database();
 const ref = database.ref('quiz').child("admin");
 const ref2 = database.ref('quiz').child("user");
 const ref3 = database.ref('quiz').child("vote");
+const ref5 = database.ref('quiz').child("config");
 var userKey = "";
 
 
@@ -11,8 +12,26 @@ function init(){
   if(userKey != ""){
     vue.toWaitMenu();
     waitQuiz();
+  } else {
+    onceGetConfig();
   }
 }
+
+
+/*
+クイズのタイトル名を取得する
+*/
+function onceGetConfig(){
+  ref5.child('mainTitle').once('value').then(function(snapshot) {
+
+    var mainTitle = snapshot.val();
+    if(mainTitle != null){
+      vue.mainTitle = mainTitle
+    }
+  })
+}
+
+
 
 /*
 名前送信
@@ -48,10 +67,10 @@ function waitQuiz(){
 
     if(val.question != undefined){
 
-      var quizNum = val.question.questionNum;
+      var questionNum = val.question.questionNum;
       var quizContents = val.question.quizContents;
       var ansList = val.question.ansList;
-      vue.setQuestion(quizNum, quizContents, ansList)
+      vue.setQuestion(questionNum, quizContents, ansList)
 
       var selectAnsNumByCookie = getCookie(key);
 

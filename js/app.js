@@ -1,7 +1,8 @@
 var vue = new Vue({
   el: "#app",
   data: {
-      quizNum: 1,
+      mainTitle:"クイズ大会",
+      questionNum: 1,
       quizContents: "",
       ansList:[],
       selectAnsNum: -1,
@@ -48,8 +49,8 @@ var vue = new Vue({
       this.isHideNum = 5;
       doit();
     },
-    setQuestion(quizNum, quizContents, ansList){
-      this.quizNum = quizNum;
+    setQuestion(questionNum, quizContents, ansList){
+      this.questionNum = questionNum;
       this.quizContents = quizContents;
       this.ansList = ansList;
       this.selectAnsNum = -1;

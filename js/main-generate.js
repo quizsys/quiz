@@ -13,6 +13,7 @@ function init(){
   }
   //ログイン済みの時
   vue.isHideNum = 2;
+  onceGetConfig()
   onceGetMaster()
 }
 
@@ -31,22 +32,24 @@ function loginInit(){
 }
 
 
-function waitLoginInit(){
 
-  setTimeout(function(){
-    if(!loginInit()){
-      console.log("ログイン後初期化処理:", vue.loginCount)
-      vue.loginCount++;
-      if(vue.loginCount < 3){
-        waitLoginInit();
+
+/*
+クイズのタイトル名を取得する
+*/
+function onceGetConfig(){
+  ref.child("config").once('value').then(function(snapshot) {
+
+    var val = snapshot.val();
+
+    if(val != null){
+      var mainTitle = val.mainTitle;
+      if(mainTitle != undefined){
+        vue.mainTitle = mainTitle
       }
     }
-  }, 1000)
+  })
 }
-
-
-
-
 
 
 function onceGetMaster(){
@@ -74,40 +77,13 @@ function onceGetMaster(){
 問題送信
 */
 function sendMaser(){
+
+  var config = {
+    mainTitle: vue.mainTitle
+  }
+
 	 ref.update({
-     master: vue.json
+     master: vue.json,
+     config: config
 	 }).key;
-}
-
-
-/*
-----------------------------------------
-ユーザー認証
-* ログイン成功時にtrueを返す
-----------------------------------------
-*/
-
-function login(email, password){
-  var errorCode = "";
-  var user = firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-    // Handle Errors here.
-    errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode,errorMessage)
-  });
-  return (errorCode == "");
-}
-
-/*
-ログイン済み: true
-未ログイン: false
-*/
-function checkLoginStatus(){
-  return firebase.auth().currentUser != null;
-}
-
-function signOut(){
-  firebase.auth().signOut().then(()=>{
-    console.log("ログアウトしました");
-  })
 }
