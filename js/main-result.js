@@ -8,11 +8,14 @@ const ref5 = database.ref('quiz').child("config");
 var userList = {};
 var questions = [];
 
-
+//トースターの配置
 toastr.options = {
   "positionClass": "toast-bottom-left"
 }
 
+/*
+  画面起動時の初期化処理
+*/
 function init(){
 
   //ログイン確認
@@ -31,11 +34,13 @@ function init(){
   initQuizData();
   waitAddUser();
   waitUserAnswer();
-  // waitComment();
   return true;
 }
 
-//ログイン後に実施される初期化処理
+/*
+  ログイン後に実施される初期化処理
+  initで実施する画面遷移がない
+*/
 function loginInit(){
   //ログイン確認
   var status = checkLoginStatus()
@@ -46,7 +51,6 @@ function loginInit(){
   //ログイン済みの時
   vue.isHideNum = 1;
   vue.isIconHide4 = false;
-
 
   onceGetMaster();
   initQuizData();
@@ -86,7 +90,9 @@ function onceGetConfig(){
   })
 }
 
-
+/*
+  ユーザーの参加を確認
+*/
 function waitAddUser(){
 
   	ref2.on("child_added", (snapshot) => {
@@ -96,7 +102,6 @@ function waitAddUser(){
         userList[snapshot.key] = {}
         userList[snapshot.key].name = userName;
         userList[snapshot.key].count = 0;
-        userList[snapshot.key].loginDateTime = getTimeStamp();
         vue.allUserCount++;
         vue.loginMessage = userName + "さんが参加しました<br />" + vue.loginMessage;
         toastr.success(userName + 'さんが参加しました');
@@ -144,21 +149,26 @@ function checkAns(){
 }
 
 
+/*
+  結果を集計する
+*/
 function summaryResult(){
 
+  //問題数と同じ大きさのリストを作成
+  var countList = [];
+  for(var i=0; i<questions.length; i++){
+    countList.push("");
+  }
 
-  //結果を集計
-  var countList = ["","","","","","","","","",""];
+  //正解数毎にユーザをまとめる
   for(var i in userList){
     var user = userList[i]
     countList[user.count] += user.name + "、";
   }
 
-  var count = 1
-
-  //6点～1点までを表示（0点は表示しない）
-  for(var i = 9; i> 0; i--){
-
+  var count = 0
+  //最高点～1点までを表示（0点は表示しない）
+  for(var i = questions.length; i> 0; i--){
     if(countList[i] != ""){
       var result = {}
       console.log(i, countList[i])
@@ -166,11 +176,11 @@ function summaryResult(){
       result.name = countList[i];
       vue.resultList.push(result);
       count++;
+      //3位まで表示
       if(count == 3){
         break;
       }
     }
-
   }
   console.log(vue.resultList)
 }
@@ -235,17 +245,6 @@ function sendAnswer(){
 */
 
 
-function getTimeStamp(){
-  //ゲーム開始日時を登録
-  var nowDate = new Date();
-  var month = nowDate.getMonth()+1
-  var date = nowDate.getDate()
-  var hour = nowDate.getHours()
-  var minute = nowDate.getMinutes()
-  var second = nowDate.getSeconds();
-  var formatTime = month+"/"+date+" "+hour+":"+minute+":"+second
-  return formatTime;
-}
 
 
 console.log("load end")

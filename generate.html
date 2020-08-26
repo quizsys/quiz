@@ -17,9 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
 
 
-    <script src="/__/firebase/init.js"></script> 
-  <!--  <script src="init.js"></script> -->
-
+     <script src="/__/firebase/init.js"></script>
+    <!--<script src="init.js"></script> -->
 
 
     <title>クイズ編集ページ</title>
@@ -166,39 +165,136 @@
         <h1 style="color:red">ジャンルを選択</h1>
         <br>
         <span v-for="(kind, index) in json">
-          <button class="btn btn-kind" v-bind:id="index" @click="goQuiz($event)" >{{kind.genre}}</button>
+          <button class="btn btn-kind btn-default" v-bind:id="index" @click="goQuiz($event)" >{{kind.genre}}</button>
         </span>
       </div>
 
 
-        <div id="question-contents" class="contents" v-bind:class="{ hide: (isHideNum != 4) }">
-          <h1>Q.{{ quizNum }}</h1>
-          <h2 v-html="quizContents"></h2>
-          <br>
-              <button class="btn btn-outline-primary waves-effect btn-top" style="width:90%">{{ansList[0]}}</button>
-              <button class="btn btn-outline-danger waves-effect btn-top" style="width:90%">{{ansList[1]}}</button>
-              <button class="btn btn-outline-default  waves-effect btn-top" style="width:90%">{{ansList[2]}}</button>
-              <button class="btn btn-outline-secondary  waves-effect btn-top" style="width:90%">{{ansList[3]}}</button>
+      <div id="question-contents" class="contents" v-bind:class="{ hide: (isHideNum != 4) }">
+         <h1>Q.{{ questionNum }}</h1>
+         <h2 v-html="quizContents"></h2>
+         <br>
+         <div class="row">
+           <div class="col-xs-1"></div>
+           <div class="col-xs-6">
+             <button class="btn btn-outline-primary waves-effect btn-top" style="width:90%">{{ansList[0]}}</button>
+             <button class="btn btn-outline-danger waves-effect btn-top" style="width:90%">{{ansList[1]}}</button>
+             <button class="btn btn-outline-default  waves-effect btn-top" style="width:90%">{{ansList[2]}}</button>
+             <button class="btn btn-outline-secondary  waves-effect btn-top" style="width:90%">{{ansList[3]}}</button>
+           </div>
+           <div class="col-xs-5" style="padding-left: 0px;">
+             <div id="index" style="width:100%;position: absolute;">
+                 <img id="top-img" src="img/qr-code.png" width="60%">
+             </div>
+             <div id="contents"  class="hide" style="width:100%;height:50vw;position: absolute;background-color:gray"></div>
+           </div>
+         </div>
+       </div>
 
-              <br />
 
+
+
+        <div id="timeup-contents" class="contents" v-bind:class="{ hide: (isHideNum != 5) }">
+            <h2>回答受付を終了しました！</h2>
+            <br />
+            <hr />
+            <div class="row">
+              <div class="col-xs-3">
+                <button class="btn btn-outline-primary waves-effect btn-ans">{{ansList[0]}}</button><br />
+                <div class="ans-list">回答者が表示されます</div>
+              </div>
+                <div class="col-xs-3">
+                <button class="btn btn-outline-danger waves-effect btn-ans">{{ansList[1]}}</button><br />
+                <div class="ans-list">回答者が表示されます</div>
+              </div>
+                <div class="col-xs-3">
+                <button class="btn btn-outline-default waves-effect btn-ans">{{ansList[2]}}</button><br />
+                <div class="ans-list">回答者が表示されます</div>
+              </div>
+                <div class="col-xs-3">
+                <button class="btn btn-outline-secondary waves-effect btn-ans">{{ansList[3]}}</button><br />
+                <div class="ans-list">回答者が表示されます</div>
+              </div>
+            </div>
         </div>
 
 
-        <div id="footer-fixed2" class="contents" v-bind:class="{ hide: (isHideNum < 3)}">
-          <div id="footer-bk2">
-            <div id="text-box">
-              <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="col-xs-8">
-                  <button class="btn btn-primary btn-top" @click="back">トップへ戻る</button>
+
+        <div id="answer-contents" class="contents" v-bind:class="{ hide: (isHideNum != 6) }">
+            <h2 style="text-align: left;">答えは。。。。</h2>
+            <button class="btn waves-effect btn-top"
+             v-bind:class="{ 'btn-outline-primary': isCorrectList[0],'btn-outline-danger': isCorrectList[1],
+              'btn-outline-default': isCorrectList[2], 'btn-outline-secondary': isCorrectList[3]}">
+                {{correctAnswer}}
+            </button><br />
+
+            <hr />
+            <h3>正解者</h3>
+            <span style="font-size:25px">正解者が一覧表示されます</span>
+            <br /><br /><br />
+
+            <div style="border: solid 2px gray;">
+              <h3>解説</h3>
+              <div style="font-size:1.5vw" v-html="explain"></div>
+            </div>
+        </div>
+
+
+
+        <div id="result-contents" class="contents" v-bind:class="{ hide: (isHideNum != 7) }">
+          <h1>結果発表！！！</h1>
+          <button class="btn btn-primary btn-top" @click="showResult()" v-bind:class="{ hide: !isHideResult}">結果を表示</button>
+          <div v-bind:class="{ hide: isHideResult}">
+            <div class="row">
+              <div class="col-xs-4"></div>
+              <div class="col-xs-6">
+                <div style="font-size:25px; text-align:left">
+                  5問正解: 名無し1<br />
+                  4問正解: 名無し2<br />
+                  3問正解: 名無し3<br />
                 </div>
-                <div class="col-xs-2"></div>
+              </div>
+              <div class="col-xs-2"></div>
+            </div>
+            <br />
+            <h1>おめでとう！！！</h1>
+          </div>
+        </div>
+
+
+        <div id="footer-fixed" style="width: 100%;left:0px" v-bind:class="{ hide: (isHideNum < 3)}">
+          <div id="footer-bk">
+            <div class="row" style="height:100%">
+
+              <div class="col-xs-3">
+                  <span style="color:red;font-size:2.5vw">プレビュー中！</br>
+              </div>
+
+              <div class="col-xs-4">
+                <button class="btn btn-primary btn-top" @click="back">編集画面へ戻る</button>
+              </div>
+
+              <div class="col-xs-1" v-bind:class="{ hide: isIconHide6}">
+                回答者数 / 参加者数
+              </div>
+              <div class="col-xs-2" v-bind:class="{ hide: isIconHide6}">
+                <h3>残り 〇秒<h3>
+              </div>
+              <div class="col-xs-1  pull-right" v-bind:class="{ hide: isIconHide1}">
+                <button @click="checkToResultPage()" class="btn-icon" type="button" title="結果発表">結果発表</button>
+              </div>
+              <div class="col-xs-1  pull-right" v-bind:class="{ hide: isIconHide2}">
+                <button @click="toCorrectAnswer()" class="btn-icon" type="button" title="答えを表示">答えを表示</button>
+              </div>
+              <div class="col-xs-1  pull-right" v-bind:class="{ hide: isIconHide3}">
+                <button @click="toTimeUp()" class="btn-icon" type="button" title="回答結果表示">回答結果表示</button>
+              </div>
+              <div class="col-xs-1  pull-right" v-bind:class="{ hide: isIconHide4}">
+                <button @click="toHome()" class="btn-icon" type="button" title="ホームへ">ホームへ</button>
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
     </body>

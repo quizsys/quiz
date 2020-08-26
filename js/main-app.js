@@ -48,10 +48,14 @@ function sendName(){
 回答送信
 */
 function sendSelectAnswer(){
-  ref3.child(userKey).update({
+
+  ref3.push({
     selectAnsNum: vue.selectAnsNum
-  });
+  })
+  setCookieQuizKey(tmpQuestionKey)
+  setCookieSelectAns(vue.selectAnsNum)
 }
+
 
 
 function waitQuiz(){
@@ -77,7 +81,7 @@ function waitQuiz(){
       //回答済みかを判定する
       if(selectAnsNumByCookie != -1){
         vue.selectAnsNum = selectAnsNumByCookie;
-        vue.isHideNum = 4;
+        vue.isHideNum = 7;
       } else {
         tmpQuestionKey = key;
         vue.next();

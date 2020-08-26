@@ -16,7 +16,6 @@ var vue = new Vue({
       isIconHide2:true,
       isIconHide3:true,
       isIconHide4:true,
-      // isIconHide5:true,
       isIconHide6:true,
       resultList: [],
       allUserCount: 0,
@@ -51,7 +50,6 @@ var vue = new Vue({
       if(!this.isIconHide2) this.isIconHide2 = true;
       if(!this.isIconHide3) this.isIconHide3 = true;
       if(!this.isIconHide4) this.isIconHide4 = true;
-      // if(!this.isIconHide5) this.isIconHide5 = true;
       if(!this.isIconHide6) this.isIconHide6 = true;
     },
     toTopPage(){

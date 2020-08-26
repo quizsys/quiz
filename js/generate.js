@@ -2,7 +2,7 @@ var vue = new Vue({
   el: "#app",
   data: {
       mainTitle:"クイズ大会",
-      quizNum: 1,
+      questionNum: 1,
       quizContents: "",
       questionTitle: "",
       ansList:[],
@@ -12,6 +12,14 @@ var vue = new Vue({
       correctAnswer : "",
       correctAnswerNum: -1,
       isHideNum: 0,
+      isIconHide1:true,
+      isIconHide2:true,
+      isIconHide3:true,
+      isIconHide4:true,
+      isIconHide6:true,
+      isCorrectList:[false, false, false, false],
+      isHideResult:true,
+      explain: "",
       error: {
         requireName: false,
         requirePassword: false,
@@ -40,6 +48,13 @@ var vue = new Vue({
       },
    },
   methods: {
+    resetIcon(){
+      if(!this.isIconHide1) this.isIconHide1 = true;
+      if(!this.isIconHide2) this.isIconHide2 = true;
+      if(!this.isIconHide3) this.isIconHide3 = true;
+      if(!this.isIconHide4) this.isIconHide4 = true;
+      if(!this.isIconHide6) this.isIconHide6 = true;
+    },
     upQuestion(e){
       var id = parseInt(e.target.id);
       var tmpQ = this.json[id];
@@ -68,6 +83,8 @@ var vue = new Vue({
     },
     preView(){
       this.isHideNum = 3;
+      this.resetIcon()
+      this.isIconHide1 = false;
     },
     commit(){
       sendMaser();
@@ -91,27 +108,57 @@ var vue = new Vue({
 
       //クイズ取得
       var q = vue.json[selectQuestionNum]
-      this.setQuestion(this.quizNum+1, q.quizContents, q.ansList)
+      this.setQuestion(this.questionNum+1, q.quizContents, q.ansList)
       this.getAnswerResult(q.correctAnswer, q.explain)
 
       //画面描画
       this.isHideNum = 4;
+
+      this.resetIcon()
+      this.isIconHide3 = false;
+      this.isIconHide6 = false;
     },
     toTopPage(){
       this.isHideNum = 2;
     },
+    toHome(){
+      this.isHideNum = 3;
+      this.resetIcon();
+      this.isIconHide1 = false;
+    },
+    toTimeUp(){
+      this.isHideNum = 5;
+      this.resetIcon();
+      this.isIconHide2 = false;
+    },
+    toCorrectAnswer(){
+      this.setCorrectButton()
+      this.isHideNum = 6;
+      this.resetIcon();
+      this.isIconHide4 = false;
+    },
+    checkToResultPage(){
+      swal({
+        title: "結果発表に進む？",
+        type:"info",
+        showCancelButton : true
+      })
+      .then(function(val){
+        this.isHideResult = true;
+        vue.toResultPage()
+      })
+      .catch(function(e) {
+        //cancelを押した場合はこちら
+      });
+    },
+    toResultPage(){
+      this.isHideNum = 7;
+    },
+    showResult(){
+      this.isHideResult = false;
+    },
     back(){
       this.isHideNum = 2;
-    },
-    reset(){
-      if(!this.isHide1) this.isHide1 = true;
-      if(!this.isHide2) this.isHide2 = true;
-      if(!this.isHide3) this.isHide3 = true;
-    },
-    clickFunc(num) {
-      this.selectAnsNum = num;
-      sendSelectAnswer();
-      this.isHideNum = 4;
     },
     confirm(){
       //ログイン処理
@@ -122,20 +169,20 @@ var vue = new Vue({
        login(this.name, this.password)
       }
     },
-
-    toWaitMenu(){
-      this.isHideNum = 2;
-    },
-    next(){
-      this.isHideNum = 3;
-    },
+    //
+    // toWaitMenu(){
+    //   this.isHideNum = 2;
+    // },
+    // next(){
+    //   this.isHideNum = 3;
+    // },
     getAnswer(ansNum){
       this.isCorrect = (this.selectAnsNum == ansNum);
       this.correctAnswer = this.ansList[ansNum];
       this.correctAnswerNum = ansNum;
     },
-    setQuestion(quizNum, quizContents, ansList){
-      this.quizNum = quizNum;
+    setQuestion(questionNum, quizContents, ansList){
+      this.questionNum = questionNum;
       this.quizContents = quizContents;
       this.ansList = ansList;
       this.selectAnsNum = -1;
@@ -147,9 +194,11 @@ var vue = new Vue({
       this.correctAnswerNum = ansNum;
       this.explain = explain
     },
-    toTimeOut(){
-      this.reset()
-      this.isHide6 = false;
+    setCorrectButton(){
+      for(var i in this.isCorrectList){
+        this.isCorrectList[i] = false;
+      }
+      this.isCorrectList[this.correctAnswerNum] = true;
     }
   }
 })

@@ -16,9 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
-    <script src="/__/firebase/init.js"></script> 
-  <!--  <script src="init.js"></script> -->
-
+     <script src="/__/firebase/init.js"></script>
+    <!--<script src="init.js"></script> -->
 
 
 
@@ -66,6 +65,12 @@
       <div id="select-contents" class="contents" v-bind:class="{ hide: (isHideNum != 6) }">
           <h2>時間切れです。。。</h2>
       </div>
+
+
+      <div id="select-contents" class="contents" v-bind:class="{ hide: (isHideNum != 7) }">
+          <h2>回答済みです！</h2>
+      </div>
+
 
       <div id="result-contents" class="contents" v-bind:class="{ hide: (isHideNum != 5) }">
 
