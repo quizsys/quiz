@@ -177,7 +177,7 @@
         <h1 style="color:red">ジャンルを選択</h1>
         <br>
         <span v-for="(kind, index) in json">
-          <button class="btn btn-kind btn-default" v-bind:id="index" @click="goQuiz($event)" >{{kind.genre}}</button>
+          <button class="btn btn-kind btn-default" style="text-transform: none;" v-bind:id="index" @click="goQuiz($event)" >{{kind.genre}}</button>
         </span>
       </div>
 
@@ -189,10 +189,10 @@
          <div class="row">
            <div class="col-xs-1"></div>
            <div class="col-xs-6">
-             <button class="btn btn-outline-primary waves-effect btn-top" style="width:90%">{{ansList[0]}}</button>
-             <button class="btn btn-outline-danger waves-effect btn-top" style="width:90%">{{ansList[1]}}</button>
-             <button class="btn btn-outline-default  waves-effect btn-top" style="width:90%">{{ansList[2]}}</button>
-             <button class="btn btn-outline-secondary  waves-effect btn-top" style="width:90%">{{ansList[3]}}</button>
+             <button class="btn btn-outline-primary waves-effect btn-top" style="width:90%;text-transform: none;">{{ansList[0]}}</button>
+             <button class="btn btn-outline-danger waves-effect btn-top" style="width:90%;text-transform: none;">{{ansList[1]}}</button>
+             <button class="btn btn-outline-default  waves-effect btn-top" style="width:90%;text-transform: none;">{{ansList[2]}}</button>
+             <button class="btn btn-outline-secondary  waves-effect btn-top" style="width:90%;text-transform: none;">{{ansList[3]}}</button>
            </div>
            <div class="col-xs-5" style="padding-left: 0px;">
              <div id="index" style="width:100%;position: absolute;">
@@ -212,19 +212,19 @@
             <hr />
             <div class="row">
               <div class="col-xs-3">
-                <button class="btn btn-outline-primary waves-effect btn-ans">{{ansList[0]}}</button><br />
+                <button class="btn btn-outline-primary waves-effect btn-ans" style="text-transform: none;">{{ansList[0]}}</button><br />
                 <div class="ans-list">回答者が表示されます</div>
               </div>
                 <div class="col-xs-3">
-                <button class="btn btn-outline-danger waves-effect btn-ans">{{ansList[1]}}</button><br />
+                <button class="btn btn-outline-danger waves-effect btn-ans" style="text-transform: none;">{{ansList[1]}}</button><br />
                 <div class="ans-list">回答者が表示されます</div>
               </div>
                 <div class="col-xs-3">
-                <button class="btn btn-outline-default waves-effect btn-ans">{{ansList[2]}}</button><br />
+                <button class="btn btn-outline-default waves-effect btn-ans" style="text-transform: none;">{{ansList[2]}}</button><br />
                 <div class="ans-list">回答者が表示されます</div>
               </div>
                 <div class="col-xs-3">
-                <button class="btn btn-outline-secondary waves-effect btn-ans">{{ansList[3]}}</button><br />
+                <button class="btn btn-outline-secondary waves-effect btn-ans" style="text-transform: none;">{{ansList[3]}}</button><br />
                 <div class="ans-list">回答者が表示されます</div>
               </div>
             </div>
@@ -234,7 +234,7 @@
 
         <div id="answer-contents" class="contents" v-bind:class="{ hide: (isHideNum != 6) }">
             <h2 style="text-align: left;">答えは。。。。</h2>
-            <button class="btn waves-effect btn-top"
+            <button style="text-transform: none;" class="btn waves-effect btn-top"
              v-bind:class="{ 'btn-outline-primary': isCorrectList[0],'btn-outline-danger': isCorrectList[1],
               'btn-outline-default': isCorrectList[2], 'btn-outline-secondary': isCorrectList[3]}">
                 {{correctAnswer}}
@@ -247,7 +247,7 @@
 
             <div style="border: solid 2px gray;">
               <h3>解説</h3>
-              <div style="font-size:1.5vw" v-html="explain"></div>
+              <div style="font-size:1.5vw" v-html="explain" style="text-transform: none;"></div>
             </div>
         </div>
 
