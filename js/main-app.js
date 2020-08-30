@@ -5,7 +5,9 @@ const ref3 = database.ref('quiz').child("vote");
 const ref5 = database.ref('quiz').child("config");
 var userKey = "";
 
-
+/*
+  初期化処理
+*/
 function init(){
 
   userKey = getCookieUserKey();
@@ -14,9 +16,9 @@ function init(){
     waitQuiz();
   } else {
     onceGetConfig();
+    document.getElementById("nameInput").focus();
   }
 }
-
 
 /*
 クイズのタイトル名を取得する
@@ -30,8 +32,6 @@ function onceGetConfig(){
     }
   })
 }
-
-
 
 /*
 名前送信
@@ -49,18 +49,19 @@ function sendName(){
 */
 function sendSelectAnswer(){
 
-  ref3.push({
+  ref3.child(userKey).update({
     selectAnsNum: vue.selectAnsNum
-  })
+  });
   setCookieQuizKey(tmpQuestionKey)
   setCookieSelectAns(vue.selectAnsNum)
 }
 
-
-
+/*
+  クイズの配信待ち処理
+*/
 function waitQuiz(){
 
-	ref.on("child_added", (snapshot) => {
+	ref.on("child_added", function(snapshot){
 
     if(snapshot.val() == ""){
       return;
@@ -102,45 +103,53 @@ function waitQuiz(){
 	});
 }
 
+/*
+クッキーから回答状況を取得
+*/
+function getCookie(getkey){
+	var questionKey = $.cookie("questionKey")
+  var selectAns = $.cookie("selectAns");
 
-  //クッキーから回答状況を取得
-  function getCookie(getkey){
-  	var questionKey = $.cookie("questionKey")
-    var selectAns = $.cookie("selectAns");
-
-  	if(questionKey == undefined){
-      //未回答
-  		return -1;
-  	} else if(questionKey == getkey && selectAns != undefined){
-      //回答済み
-      return selectAns;
-    } else {
-      //他の設問で回答済み
-      return -1;
-    }
+	if(questionKey == undefined){
+    //未回答
+		return -1;
+	} else if(questionKey == getkey && selectAns != undefined){
+    //回答済み
+    return selectAns;
+  } else {
+    //他の設問で回答済み
+    return -1;
   }
+}
 
-  function getCookieUserKey(){
+/*
+クッキーから参加状況を取得
+*/
+function getCookieUserKey(){
 
-    var _userKey = $.cookie("userKey")
-    if(_userKey == undefined){
-  		return "";
-    } else {
-      return _userKey;
-    }
+  var _userKey = $.cookie("userKey")
+  if(_userKey == undefined){
+		return "";
+  } else {
+    return _userKey;
   }
+}
 
-
-  //クッキーに保存する
-  function setCookieQuizKey(questionKey){
-  	//保存期間は1日
-  	$.cookie("questionKey", questionKey, { expires: 1, path: '/'});
-  }
-  function setCookieSelectAns(selectAns){
-  	//保存期間は1日
-  	$.cookie("selectAns", selectAns, { expires: 1, path: '/'});
-  }
-  function setCookieUserKey(_userKey){
-  	//保存期間は1日
-  	$.cookie("userKey", _userKey, { expires: 1, path: '/'});
-  }
+/*
+  クッキーに保存する
+*/
+function setCookieQuizKey(questionKey){
+  setCookie("questionKey", questionKey);
+}
+function setCookieSelectAns(selectAns){
+  setCookie("selectAns", selectAns);
+}
+function setCookieUserKey(_userKey){
+  setCookie("userKey", _userKey);
+}
+function setCookie(key,val){
+  //保存期間は3時間
+  var date = new Date();
+  date.setTime(date.getTime() + (3*60*60*1000));
+	$.cookie(key, val, { expires: date, path: '/'});
+}

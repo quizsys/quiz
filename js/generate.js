@@ -23,7 +23,11 @@ var vue = new Vue({
       error: {
         requireName: false,
         requirePassword: false,
-        missLoginInfo: false
+        missLoginInfo: false,
+        requireMainTitle:false,
+        toLongMainTitle:false,
+        requireMaxLimitTime:false,
+        toLongMaxLimitTime:false
       },
       isCommit:false,
       resultURL:"",
@@ -38,7 +42,8 @@ var vue = new Vue({
           correctAnswer: 1
         },
       ],
-  },
+      maxLimitTime: 40
+    },
   watch: {
      name: function(newVal, oldVal) {
        this.error.requireName = (newVal.length < 1) ? true : false;
@@ -46,6 +51,14 @@ var vue = new Vue({
       password: function(newVal, oldVal) {
         this.error.requirePassword = (newVal.length < 1) ? true : false;
       },
+      mainTitle: function(newVal, oldVal) {
+       this.error.requireMainTitle = (newVal.length < 1) ? true : false;
+       this.error.toLongMainTitle = (30 < newVal.length) ? true : false;
+      },
+      maxLimitTime: function(newVal, oldVal) {
+       this.error.requireMaxLimitTime = (newVal < 5) ? true : false;
+       this.error.toLongMaxLimitTime = (180 < newVal) ? true : false;
+      }
    },
   methods: {
     resetIcon(){
@@ -97,6 +110,7 @@ var vue = new Vue({
       }
       this.resultURL =  url + "result.html"
       this.appURL =  url + "index.html"
+      this.updateAlart();
     },
 
     goQuiz(e){
@@ -169,13 +183,10 @@ var vue = new Vue({
        login(this.name, this.password)
       }
     },
-    //
-    // toWaitMenu(){
-    //   this.isHideNum = 2;
-    // },
-    // next(){
-    //   this.isHideNum = 3;
-    // },
+    logout(){
+      signOut();
+      this.isHideNum = 1;
+    },
     getAnswer(ansNum){
       this.isCorrect = (this.selectAnsNum == ansNum);
       this.correctAnswer = this.ansList[ansNum];
@@ -199,6 +210,59 @@ var vue = new Vue({
         this.isCorrectList[i] = false;
       }
       this.isCorrectList[this.correctAnswerNum] = true;
+    },
+    explainUse(){
+      swal({
+        title: "説明"
+      })
+    },
+    // toUserEdit(){
+    //   this.email = firebase.auth().currentUser.email
+    //   this.isHideNum = 10;
+    // },
+    // toPassEdit(){
+    //   this.isHideNum = 11;
+    // },
+    // toEmailEdit(){
+    //   this.isHideNum = 12;
+    // },
+    alertLogout(){
+
+      swal({
+            title: 'ログアウトしますか？',
+            confirmButtonText : "はい",
+            cancelButtonText : "いいえ",
+            showCancelButton:true,
+            type: 'warning'
+          })
+          .then(function(val){
+            vue.logout();
+          })
+          .catch(function(e) {
+            //cancelを押した場合はこちら
+          });
+
+    },
+    toSetting(){
+      this.isHideNum = 10;
+    },
+    updateConfig(){
+      if(0 < this.mainTitle.length && this.mainTitle.length < 31 && 4 < this.maxLimitTime && this.maxLimitTime < 301){
+        sendConfig();
+        this.updateAlart();
+      }
+    },
+    updateAlart(){
+      swal({
+          title: '更新しました',
+          type: 'success'
+        })
+        .then(function(val){
+          vue.toTopPage();
+        })
+        .catch(function(e) {
+          //cancelを押した場合はこちら
+        });
     }
   }
 })

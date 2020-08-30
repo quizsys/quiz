@@ -52,6 +52,7 @@ function loginInit(){
   vue.isHideNum = 1;
   vue.isIconHide4 = false;
 
+  onceGetConfig()
   onceGetMaster();
   initQuizData();
   waitAddUser();
@@ -78,14 +79,22 @@ function onceGetMaster(){
 
 
 /*
-クイズのタイトル名を取得する
+クイズのコンフィグを取得する
 */
 function onceGetConfig(){
-  ref5.child('mainTitle').once('value').then(function(snapshot) {
+  ref5.once('value').then(function(snapshot) {
 
-    var mainTitle = snapshot.val();
-    if(mainTitle != null){
-      vue.mainTitle = mainTitle
+    var val = snapshot.val();
+
+    if(val != null){
+      var mainTitle = val.mainTitle;
+      if(mainTitle != undefined){
+        vue.mainTitle = mainTitle;
+      }
+      var maxLimitTime = val.maxLimitTime;
+      if(maxLimitTime != undefined){
+        vue.maxLimitTime = maxLimitTime;
+      }
     }
   })
 }
@@ -109,29 +118,26 @@ function waitAddUser(){
   	});
 }
 
-
-
 /*
   ユーザーの回答を取得
 */
 function waitUserAnswer(){
 
-  	ref3.on("child_added", (snapshot) => {
+	ref3.on("child_added", (snapshot) => {
 
-      var key = snapshot.key;
-      var val = snapshot.val().selectAnsNum;
+    var key = snapshot.key;
+    var val = snapshot.val().selectAnsNum;
 
-      if(val != -1){
-        userList[snapshot.key].selectAnsNum = val;
-        vue.answerList[val].push(userList[snapshot.key].name);
-        vue.ansUserCount++;
-        var userName = userList[snapshot.key].name;
-        toastr.info(userName + 'さんが解答しました！');
+    if(val != -1){
+      userList[snapshot.key].selectAnsNum = val;
+      vue.answerList[val].push(userList[snapshot.key].name);
+      vue.ansUserCount++;
+      var userName = userList[snapshot.key].name;
+      toastr.info(userName + 'さんが解答しました！');
 
-      }
-  	});
+    }
+	});
 }
-
 
 /*
   ユーザーの回答を検証
@@ -154,11 +160,13 @@ function checkAns(){
 */
 function summaryResult(){
 
-  //問題数と同じ大きさのリストを作成
+  //問題数+1の大きさのリストを作成（正答数0を考慮）
   var countList = [];
-  for(var i=0; i<questions.length; i++){
+  for(var i=0; i<questions.length+1; i++){
     countList.push("");
   }
+
+  console.log(countList)
 
   //正解数毎にユーザをまとめる
   for(var i in userList){

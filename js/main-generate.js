@@ -35,7 +35,7 @@ function loginInit(){
 
 
 /*
-クイズのタイトル名を取得する
+クイズの設定を取得する
 */
 function onceGetConfig(){
   ref.child("config").once('value').then(function(snapshot) {
@@ -45,7 +45,11 @@ function onceGetConfig(){
     if(val != null){
       var mainTitle = val.mainTitle;
       if(mainTitle != undefined){
-        vue.mainTitle = mainTitle
+        vue.mainTitle = mainTitle;
+      }
+      var maxLimitTime = val.maxLimitTime;
+      if(maxLimitTime != undefined){
+        vue.maxLimitTime = maxLimitTime;
       }
     }
   })
@@ -78,12 +82,22 @@ function onceGetMaster(){
 */
 function sendMaser(){
 
+	 ref.update({
+     master: vue.json
+	 });
+}
+
+/*
+設定送信
+*/
+function sendConfig(){
+
   var config = {
-    mainTitle: vue.mainTitle
+    mainTitle: vue.mainTitle,
+    maxLimitTime: vue.maxLimitTime
   }
 
 	 ref.update({
-     master: vue.json,
      config: config
-	 }).key;
+	 });
 }

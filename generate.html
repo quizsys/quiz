@@ -17,8 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
 
 
-     <script src="/__/firebase/init.js"></script>
-    <!--<script src="init.js"></script> -->
+    <script src="/__/firebase/init.js"></script>
+    <!-- <script src="init.js"></script> -->
 
 
     <title>クイズ編集ページ</title>
@@ -77,22 +77,34 @@
 
 
 
-        <div id="main-contents" class="contents"  v-bind:class="{ hide: (isHideNum != 2) }">
-          <h1 style="color:red">クイズジェネレータ</h1>
-          <br>
+        <div class="contents"  v-bind:class="{ hide: (isHideNum != 2 && isHideNum < 9) }">
 
-          <div class="ex-title">①クイズの大会のタイトルを設定</div>
-          <div class="row">
-            <div class="col-xs-2">タイトル</div>
-            <div class="col-xs-8">
-                 <input v-model="mainTitle" style="width:100%" placeholder="クイズ大会のタイトルを入力"></input>
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <h3 style="color:red">クイズ編集サイト</h3>
+              </div>
+              <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+                <ul class="nav navbar-nav">
+                  <li><a @click="toTopPage();">トップへ</a></li>
+                  <li><a @click="toSetting();">設定</a></li>
+                  <li><a @click="alertLogout();">ログアウト</a></li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <br>
+          </nav>
+          <div style="height:80px"></div>
+        </div>
 
+        <div id="main-contents" class="contents"  v-bind:class="{ hide: (isHideNum != 2) }">
 
-
-          <div class="ex-title">②クイズの内容を設定</div>
+          <div class="ex-title">①クイズの内容を設定</div>
           <div v-for="(quiz, index) in json" style="background-color:aliceblue">
               <br />
 
@@ -142,20 +154,20 @@
 
             <hr />
           </div>
-          <button class="btn btn-warning" @click="addQuestion">問題追加</button>
+          <button class="btn btn-default btn-lg" @click="addQuestion">問題追加</button>
           <br /><br />
 
-          <div class="ex-title">③表示を確認</div>
-          <button class="btn btn-primary" @click="preView">プレビュー</button>
+          <div class="ex-title">②表示を確認</div>
+          <button class="btn btn-primary btn-lg" @click="preView">プレビュー</button><br /><br />
 
-          <div class="ex-title">④内容を確定</div>
+          <div class="ex-title">③内容を確定</div>
             <div class="error" v-if="isCommit">
                 変更を確定しました。<br>
                 下記のURLから確認してください<br>
                 ◆出題者サイト：<a v-bind:href="resultURL" target="_blank">{{resultURL}}</a><br>
                 ◆回答者サイト：<a v-bind:href="appURL" target="_blank">{{appURL}}</a>
             </div>
-            <button class="btn btn-danger" @click="commit">確定</button>
+            <button class="btn btn-danger btn-lg" @click="commit">確定</button>
           </div>
 
 
@@ -262,7 +274,7 @@
         </div>
 
 
-        <div id="footer-fixed" style="width: 100%;left:0px" v-bind:class="{ hide: (isHideNum < 3)}">
+        <div id="footer-fixed" style="width: 100%;left:0px" v-bind:class="{ hide: (isHideNum < 3) || isHideNum == 10}">
           <div id="footer-bk">
             <div class="row" style="height:100%">
 
@@ -271,14 +283,14 @@
               </div>
 
               <div class="col-xs-4">
-                <button class="btn btn-primary btn-top" @click="back">編集画面へ戻る</button>
+                <button class="btn btn-primary btn-top"　style="font-size:1.5vw" @click="back">編集画面へ戻る</button>
               </div>
 
               <div class="col-xs-1" v-bind:class="{ hide: isIconHide6}">
                 回答者数 / 参加者数
               </div>
               <div class="col-xs-2" v-bind:class="{ hide: isIconHide6}">
-                <h3>残り 〇秒<h3>
+                <h3>残り {{maxLimitTime}}秒<h3>
               </div>
               <div class="col-xs-1  pull-right" v-bind:class="{ hide: isIconHide1}">
                 <button @click="checkToResultPage()" class="btn-icon" type="button" title="結果発表">結果発表</button>
@@ -295,7 +307,66 @@
             </div>
           </div>
         </div>
+
+        <!-- <div class="contents" v-bind:class="{ hide: (isHideNum != 10) }">
+          <h1>ユーザ情報</h1>
+          <div v-html="email"></div>
+          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw" @click="toEmailEdit()">メールアドレスの変更</button>
+          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw" @click="toPassEdit()">パスワードの変更</button>
+          <button class="btn btn-danger btn-top" style="width:50vw;font-size:2vw"  @click="logout()">ログアウト</button>
+        </div>
+
+        <div class="contents" v-bind:class="{ hide: (isHideNum != 11) }">
+          <h1>パスワード変更</h1>
+          <input type="password" placeholder="新しいパスワード" v-model="newPassword1"></input>
+          <input type="password" placeholder="新しいパスワード（確認）" v-model="newPassword2"></input><br />
+          <button class="btn btn-primary btn-lg" @click="passEdit()">更新する</button>
+        </div>
+
+
+        <div class="contents" v-bind:class="{ hide: (isHideNum != 12) }">
+          <h1>メールアドレス変更</h1>
+          現在のメールアドレス： <span v-html="email"></span>
+          <input type="password" placeholder="新しいメールアドレス" v-model="newPassword1"></input>
+          <input type="password" placeholder="新しいメールアドレス（確認）" v-model="newPassword2"></input><br />
+          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw"  @click="passEdit()">更新する</button>
+        </div> -->
+
+
+        <div class="contents" v-bind:class="{ hide: (isHideNum != 10) }">
+          <h1>設定</h1>
+          <div class="ex-title">①クイズの大会のタイトルを設定</div>
+          <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8">
+                 <input v-model="mainTitle" style="width:100%" placeholder="クイズ大会のタイトルを入力（30文字以内）"></input>
+                 <div class="error" v-if="error.requireMainTitle">必須項目です。</div>
+                 <div class="error" v-if="error.toLongMainTitle">タイトルは30文字以内で入力してください</div>
+            </div>
+          </div>
+          <br>
+
+          <div class="ex-title">②クイズの回答待ち時間（秒）を設定</div>
+          <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8">
+                 <input v-model="maxLimitTime" type="number" style="width:100%" placeholder="回答待ち時間（秒）を入力（5～180秒）"></input>
+                 <div class="error" v-if="error.requireMaxLimitTime">時間は5秒以上で入力してください</div>
+                 <div class="error" v-if="error.toLongMaxLimitTime">時間は180秒以内で入力してください</div>
+            </div>
+          </div>
+          <br>
+
+
+          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw"  @click="updateConfig()">更新する</button>
+        </div>
+
+
+
       </div>
+
+
+
 
     </body>
 

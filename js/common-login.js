@@ -26,17 +26,14 @@ function login(email, password){
    })
 
    var sleep = function(sec) {
-       return new Promise(resolve => {
-         setTimeout(resolve, sec * 1000);
-       });
+     return new Promise(resolve => {
+       setTimeout(resolve, sec * 1000);
+     });
    };
 
    sleep(1).then(function() {
 
-     console.log(errorCode == "")
-
      if(errorCode == ""){
-
       swal({
          title: 'ログインしました',
          type : 'success'
@@ -60,18 +57,21 @@ function login(email, password){
 未ログイン: false
 */
 function checkLoginStatus(){
-      return firebase.auth().currentUser != null;
+  return firebase.auth().currentUser != null;
 }
 
-
-
+/*
+  サインアウト処理
+*/
 function signOut(){
   firebase.auth().signOut().then(()=>{
     console.log("ログアウトしました");
   })
 }
 
-
+/*
+  ログイン完了待ち
+*/
 function waitLoginInit(){
 
   setTimeout(function(){

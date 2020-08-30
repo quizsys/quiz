@@ -24,41 +24,41 @@ var vue = new Vue({
      }
    },
   methods: {
-    confirm(){
+    confirm: function(){
       if(0 < this.name.length && this.name.length < 10){
         sendName();
         this.toWaitMenu();
         waitQuiz();
       }
     },
-    next(){
+    next: function(){
       this.isHideNum = 3;
     },
-    selectAns(num) {
+    selectAns: function(num) {
       this.selectAnsNum = num;
       sendSelectAnswer();
       this.isHideNum = 4;
     },
-    getAnswer(ansNum){
+    getAnswer: function(ansNum){
       this.isCorrect = (this.selectAnsNum == ansNum);
       this.correctAnswer = this.ansList[ansNum];
       this.correctAnswerNum = ansNum;
       this.showAnswer()
     },
-    showAnswer(){
+    showAnswer: function(){
       this.isHideNum = 5;
       doit();
     },
-    setQuestion(questionNum, quizContents, ansList){
+    setQuestion: function(questionNum, quizContents, ansList){
       this.questionNum = questionNum;
       this.quizContents = quizContents;
       this.ansList = ansList;
       this.selectAnsNum = -1;
     },
-    toWaitMenu(){
+    toWaitMenu: function(){
       this.isHideNum = 2;
     },
-    toTimeOut(){
+    toTimeOut: function(){
       this.isHideNum = 6;
     }
   }
