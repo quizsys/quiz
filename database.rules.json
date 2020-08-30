@@ -1,0 +1,26 @@
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    "quiz":{
+      ".write": "auth !== null",
+      ".read": "auth !== null",
+      "admin": {
+        ".read": true,
+      },
+      "config": {
+        ".read": true,
+      },
+      "user":{
+        ".write": true
+      },
+      "vote":{
+        ".write":true,
+        "$key":{
+          "$key2":{
+	        	".validate": "0 <= newData.val() && newData.val() <= 3"        
+        	}
+        }
+      }
+    }
+  }
+}
