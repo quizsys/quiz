@@ -104,7 +104,7 @@ function onceGetConfig(){
 */
 function waitAddUser(){
 
-  	ref2.on("child_added", (snapshot) => {
+  	ref2.on("child_added", function(snapshot){
       var userName = snapshot.val().name;
 
       if(userName != undefined){
@@ -123,7 +123,7 @@ function waitAddUser(){
 */
 function waitUserAnswer(){
 
-	ref3.on("child_added", (snapshot) => {
+	ref3.on("child_added", function(snapshot){
 
     var key = snapshot.key;
     var val = snapshot.val().selectAnsNum;

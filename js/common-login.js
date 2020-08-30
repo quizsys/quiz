@@ -20,13 +20,13 @@ function login(email, password){
   swal({
      title: 'ログイン処理中です',
      allowOutsideClick : false, //枠外をクリックしても画面を閉じない
-     onBeforeOpen: () => {
+     onBeforeOpen: function(){
          swal.showLoading();
        }
    })
 
    var sleep = function(sec) {
-     return new Promise(resolve => {
+     return new Promise(function(resolve){
        setTimeout(resolve, sec * 1000);
      });
    };
@@ -64,7 +64,7 @@ function checkLoginStatus(){
   サインアウト処理
 */
 function signOut(){
-  firebase.auth().signOut().then(()=>{
+  firebase.auth().signOut().then(function(){
     console.log("ログアウトしました");
   })
 }

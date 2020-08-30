@@ -6,6 +6,7 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script> <!--IE11 -->
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.js"></script>
   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.css">
   	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
@@ -16,8 +17,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <script src="/__/firebase/init.js"></script>
-    <!-- <script src="init.js"></script> -->
+     <script src="/__/firebase/init.js"></script> 
+    <!--<script src="init.js"></script>-->
 
     <title>クイズ出題者ページ</title>
     <script type="text/javascript" src="js/main-result.js"></script>
@@ -57,10 +58,10 @@
         <div id="login-contents" class="contents" v-bind:class="{ hide: (isHideNum != 8) }">
           <h1 style="color:red">クイズ大会 主催者ログイン</h1>
           <h2>ID/パスワードを入力してください</h2>
-          <input type="text" placeholder="ID（メールアドレス）" v-model="name"></input>
+          <input type="text" placeholder="ID（メールアドレス）" v-model="name">
           <div class="error" v-if="error.requireName">必須項目です。</div>
           <br>
-          <input type="password" placeholder="パスワード" v-model="password"></input>
+          <input type="password" placeholder="パスワード" v-model="password">
           <div class="error" v-if="error.requirePassword">必須項目です。</div>
           <div class="error" v-if="error.missLoginInfo">ログイン情報が正しくありません</div>
           <br>
@@ -208,7 +209,7 @@
               </div>
 
               <div class="col-xs-4" v-bind:class="{ hide: isIconHide6}">
-                <h3>残り {{limitTime}} 秒<h3>
+                <h3>残り {{limitTime}} 秒</h3>
               </div>
               <div class="col-xs-2  pull-right" v-bind:class="{ hide: isIconHide1}">
                 <button @click="checkToResultPage()" class="btn-icon" type="button" title="結果発表">結果発表</button>

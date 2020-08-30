@@ -45,17 +45,17 @@ var vue = new Vue({
    },
   methods: {
 
-    resetIcon(){
+    resetIcon: function(){
       if(!this.isIconHide1) this.isIconHide1 = true;
       if(!this.isIconHide2) this.isIconHide2 = true;
       if(!this.isIconHide3) this.isIconHide3 = true;
       if(!this.isIconHide4) this.isIconHide4 = true;
       if(!this.isIconHide6) this.isIconHide6 = true;
     },
-    toTopPage(){
+    toTopPage: function(){
       this.isHideNum = 1;
     },
-    toHome(){
+    toHome: function(){
       this.isHideNum = 2;
       this.resetIcon();
       this.isIconHide1 = false;
@@ -63,13 +63,13 @@ var vue = new Vue({
       //DBクイズデータの初期化
       initQuizData()
     },
-    confirm(){
+    confirm: function(){
       //ログイン処理
       if(0 < this.name.length && 0 < this.password.length){
         login(this.name, this.password);
       }
     },
-    toTimeUp(){
+    toTimeUp: function(){
       this.isHideNum = 5;
       this.resetIcon();
       this.isIconHide2 = false;
@@ -78,7 +78,7 @@ var vue = new Vue({
       clearInterval(timerInterval);
 
     },
-    toCorrectAnswer(){
+    toCorrectAnswer: function(){
       this.setCorrectButton()
       this.isHideNum = 6;
       this.resetIcon();
@@ -88,7 +88,7 @@ var vue = new Vue({
       checkAns();
 
     },
-    checkToResultPage(){
+    checkToResultPage: function(){
       swal({
         title: "結果発表に進む？",
         type:"info",
@@ -101,11 +101,11 @@ var vue = new Vue({
         //cancelを押した場合はこちら
       });
     },
-    toResultPage(){
+    toResultPage: function(){
       this.isHideNum = 7;
 
     },
-    setQuestion(questionNum, quizContents, ansList){
+    setQuestion: function(questionNum, quizContents, ansList){
       this.questionNum = questionNum;
       this.quizContents = quizContents;
       this.ansList = ansList;
@@ -113,16 +113,16 @@ var vue = new Vue({
     },
 
     //Result用メソッド
-    getAnswerResult(ansNum, explain){
+    getAnswerResult: function(ansNum, explain){
       this.correctAnswer = this.ansList[ansNum];
       this.correctAnswerNum = ansNum;
       this.explain = explain
     },
-    showResult(){
+    showResult: function(){
       summaryResult();
       this.isHideResult = false;
     },
-    goQuiz(e){
+    goQuiz: function(e){
       var selectQuestionNum = parseInt(e.target.id) ;
 
       //ボタン更新
@@ -152,7 +152,7 @@ var vue = new Vue({
       //タイトル表示
       this.showTitle();
     },
-    showTitle(){
+    showTitle: function(){
       function myFunc(){
         setTimeout(function(){
           $("#questionTitle").css("opacity", 0)
@@ -164,7 +164,7 @@ var vue = new Vue({
       }
       TweenMax.to( "#questionTitle", 2.0, {opacity: 1, ease: Circ.easeInOut, delay:0.3, onComplete:myFunc })
     },
-    countDownTimer(){
+    countDownTimer: function(){
       timerInterval = setInterval(function(){
 
         vue.limitTime--;
@@ -173,7 +173,7 @@ var vue = new Vue({
         }
       }, 1000)
     },
-    setCorrectButton(){
+    setCorrectButton: function(){
       for(var i in this.isCorrectList){
         this.isCorrectList[i] = false;
       }

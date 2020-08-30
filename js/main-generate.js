@@ -27,6 +27,7 @@ function loginInit(){
     return false;
   }
   //ログイン済みの時
+  onceGetConfig()
   onceGetMaster();
   return true;
 }

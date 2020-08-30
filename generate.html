@@ -6,6 +6,7 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script> <!--IE11 -->
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.js"></script>
   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.min.css">
   	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
@@ -17,8 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
 
 
-    <script src="/__/firebase/init.js"></script>
-    <!-- <script src="init.js"></script> -->
+     <script src="/__/firebase/init.js"></script> 
+    <!--<script src="init.js"></script>-->
 
 
     <title>クイズ編集ページ</title>
@@ -63,10 +64,10 @@
         <div id="login-contents" class="contents" v-bind:class="{ hide: (isHideNum != 1) }">
           <h1 style="color:red">クイズジェネレータ</h1>
           <h2>ID/パスワードを入力してください</h2>
-          <input type="text" placeholder="ID（メールアドレス）" v-model="name"></input>
+          <input type="text" placeholder="ID（メールアドレス）" v-model="name">
           <div class="error" v-if="error.requireName">必須項目です。</div>
           <br>
-          <input type="password" placeholder="パスワード" v-model="password"></input>
+          <input type="password" placeholder="パスワード" v-model="password">
           <div class="error" v-if="error.requirePassword">必須項目です。</div>
           <div class="error" v-if="error.missLoginInfo">ログイン情報が正しくありません</div>
           <br>
@@ -111,7 +112,7 @@
               <div class="row">
                 <div class="col-xs-2">ジャンル</div>
                 <div class="col-xs-8">
-                     <input v-model="quiz.genre" style="width:100%" placeholder="ジャンルを入力"></input>
+                     <input v-model="quiz.genre" style="width:100%" placeholder="ジャンルを入力">
                 </div>
                 <div class="col-xs-1" v-if="(index!=0)">
                   <button class="btn btn-danger" v-bind:id="index" @click="deleteQuestion($event)">×</button>
@@ -132,10 +133,10 @@
                 <div class="row">
                   <div class="col-xs-2">選択肢{{index2+1}}</div>
                   <div class="col-xs-8">
-                       <input v-model="quiz.ansList[index2]" style="width:100%" placeholder="選択肢を入力"></input>
+                       <input v-model="quiz.ansList[index2]" style="width:100%" placeholder="選択肢を入力">
                   </div>
                   <div class="col-xs-1">
-                    <input type="radio" v-bind:name="'collectAnserRadio'+index" v-bind:value="index2" v-model="quiz.correctAnswer"></input>
+                    <input type="radio" v-bind:name="'collectAnserRadio'+index" v-bind:value="index2" v-model="quiz.correctAnswer">
                   </div>
                 </div>
               </span>
@@ -279,18 +280,18 @@
             <div class="row" style="height:100%">
 
               <div class="col-xs-3">
-                  <span style="color:red;font-size:2.5vw">プレビュー中！</br>
+                  <span style="color:red;font-size:2.5vw">プレビュー中！</span><br />
               </div>
 
               <div class="col-xs-4">
-                <button class="btn btn-primary btn-top"　style="font-size:1.5vw" @click="back">編集画面へ戻る</button>
+                <button class="btn btn-primary btn-top" style="font-size:1.5vw" @click="back">編集画面へ戻る</button>
               </div>
 
               <div class="col-xs-1" v-bind:class="{ hide: isIconHide6}">
                 回答者数 / 参加者数
               </div>
               <div class="col-xs-2" v-bind:class="{ hide: isIconHide6}">
-                <h3>残り {{maxLimitTime}}秒<h3>
+                <h3>残り {{maxLimitTime}}秒</h3>
               </div>
               <div class="col-xs-1  pull-right" v-bind:class="{ hide: isIconHide1}">
                 <button @click="checkToResultPage()" class="btn-icon" type="button" title="結果発表">結果発表</button>
@@ -308,38 +309,13 @@
           </div>
         </div>
 
-        <!-- <div class="contents" v-bind:class="{ hide: (isHideNum != 10) }">
-          <h1>ユーザ情報</h1>
-          <div v-html="email"></div>
-          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw" @click="toEmailEdit()">メールアドレスの変更</button>
-          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw" @click="toPassEdit()">パスワードの変更</button>
-          <button class="btn btn-danger btn-top" style="width:50vw;font-size:2vw"  @click="logout()">ログアウト</button>
-        </div>
-
-        <div class="contents" v-bind:class="{ hide: (isHideNum != 11) }">
-          <h1>パスワード変更</h1>
-          <input type="password" placeholder="新しいパスワード" v-model="newPassword1"></input>
-          <input type="password" placeholder="新しいパスワード（確認）" v-model="newPassword2"></input><br />
-          <button class="btn btn-primary btn-lg" @click="passEdit()">更新する</button>
-        </div>
-
-
-        <div class="contents" v-bind:class="{ hide: (isHideNum != 12) }">
-          <h1>メールアドレス変更</h1>
-          現在のメールアドレス： <span v-html="email"></span>
-          <input type="password" placeholder="新しいメールアドレス" v-model="newPassword1"></input>
-          <input type="password" placeholder="新しいメールアドレス（確認）" v-model="newPassword2"></input><br />
-          <button class="btn btn-primary btn-top" style="width:50vw;font-size:2vw"  @click="passEdit()">更新する</button>
-        </div> -->
-
-
         <div class="contents" v-bind:class="{ hide: (isHideNum != 10) }">
           <h1>設定</h1>
           <div class="ex-title">①クイズの大会のタイトルを設定</div>
           <div class="row">
             <div class="col-xs-2"></div>
             <div class="col-xs-8">
-                 <input v-model="mainTitle" style="width:100%" placeholder="クイズ大会のタイトルを入力（30文字以内）"></input>
+                 <input v-model="mainTitle" style="width:100%" placeholder="クイズ大会のタイトルを入力（30文字以内）">
                  <div class="error" v-if="error.requireMainTitle">必須項目です。</div>
                  <div class="error" v-if="error.toLongMainTitle">タイトルは30文字以内で入力してください</div>
             </div>
@@ -350,7 +326,7 @@
           <div class="row">
             <div class="col-xs-2"></div>
             <div class="col-xs-8">
-                 <input v-model="maxLimitTime" type="number" style="width:100%" placeholder="回答待ち時間（秒）を入力（5～180秒）"></input>
+                 <input v-model="maxLimitTime" type="number" style="width:100%" placeholder="回答待ち時間（秒）を入力（5～180秒）">
                  <div class="error" v-if="error.requireMaxLimitTime">時間は5秒以上で入力してください</div>
                  <div class="error" v-if="error.toLongMaxLimitTime">時間は180秒以内で入力してください</div>
             </div>

@@ -61,26 +61,26 @@ var vue = new Vue({
       }
    },
   methods: {
-    resetIcon(){
+    resetIcon: function(){
       if(!this.isIconHide1) this.isIconHide1 = true;
       if(!this.isIconHide2) this.isIconHide2 = true;
       if(!this.isIconHide3) this.isIconHide3 = true;
       if(!this.isIconHide4) this.isIconHide4 = true;
       if(!this.isIconHide6) this.isIconHide6 = true;
     },
-    upQuestion(e){
+    upQuestion: function(e){
       var id = parseInt(e.target.id);
       var tmpQ = this.json[id];
       this.json.splice(id, 1, this.json[id-1])
       this.json.splice(id-1, 1, tmpQ)
     },
-    downQuestion(e){
+    downQuestion: function(e){
       var id = parseInt(e.target.id);
       var tmpQ = this.json[id];
       this.json.splice(id, 1, this.json[id+1])
       this.json.splice(id+1, 1, tmpQ)
     },
-    addQuestion(){
+    addQuestion: function(){
       var q = {
         genre: "",
         quizContents: "",
@@ -90,16 +90,16 @@ var vue = new Vue({
       };
       this.json.push(q);
     },
-    deleteQuestion(e){
+    deleteQuestion: function(e){
       var id = e.target.id;
       this.json.splice(id, 1)
     },
-    preView(){
+    preView: function(){
       this.isHideNum = 3;
       this.resetIcon()
       this.isIconHide1 = false;
     },
-    commit(){
+    commit: function(){
       sendMaser();
       this.isCommit = true
 
@@ -113,7 +113,7 @@ var vue = new Vue({
       this.updateAlart();
     },
 
-    goQuiz(e){
+    goQuiz: function(e){
       var selectQuestionNum = parseInt(e.target.id) ;
 
       //ボタン更新
@@ -132,26 +132,26 @@ var vue = new Vue({
       this.isIconHide3 = false;
       this.isIconHide6 = false;
     },
-    toTopPage(){
+    toTopPage: function(){
       this.isHideNum = 2;
     },
-    toHome(){
+    toHome: function(){
       this.isHideNum = 3;
       this.resetIcon();
       this.isIconHide1 = false;
     },
-    toTimeUp(){
+    toTimeUp: function(){
       this.isHideNum = 5;
       this.resetIcon();
       this.isIconHide2 = false;
     },
-    toCorrectAnswer(){
+    toCorrectAnswer: function(){
       this.setCorrectButton()
       this.isHideNum = 6;
       this.resetIcon();
       this.isIconHide4 = false;
     },
-    checkToResultPage(){
+    checkToResultPage: function(){
       swal({
         title: "結果発表に進む？",
         type:"info",
@@ -165,16 +165,16 @@ var vue = new Vue({
         //cancelを押した場合はこちら
       });
     },
-    toResultPage(){
+    toResultPage: function(){
       this.isHideNum = 7;
     },
-    showResult(){
+    showResult: function(){
       this.isHideResult = false;
     },
-    back(){
+    back: function(){
       this.isHideNum = 2;
     },
-    confirm(){
+    confirm: function(){
       //ログイン処理
       this.error.requireName = (0 == this.name.length);
       this.error.requirePassword = (0 == this.password.length);
@@ -183,16 +183,16 @@ var vue = new Vue({
        login(this.name, this.password)
       }
     },
-    logout(){
+    logout: function(){
       signOut();
       this.isHideNum = 1;
     },
-    getAnswer(ansNum){
+    getAnswer: function(ansNum){
       this.isCorrect = (this.selectAnsNum == ansNum);
       this.correctAnswer = this.ansList[ansNum];
       this.correctAnswerNum = ansNum;
     },
-    setQuestion(questionNum, quizContents, ansList){
+    setQuestion: function(questionNum, quizContents, ansList){
       this.questionNum = questionNum;
       this.quizContents = quizContents;
       this.ansList = ansList;
@@ -200,33 +200,18 @@ var vue = new Vue({
     },
 
     //Result用メソッド
-    getAnswerResult(ansNum, explain){
+    getAnswerResult: function(ansNum, explain){
       this.correctAnswer = this.ansList[ansNum];
       this.correctAnswerNum = ansNum;
       this.explain = explain
     },
-    setCorrectButton(){
+    setCorrectButton: function(){
       for(var i in this.isCorrectList){
         this.isCorrectList[i] = false;
       }
       this.isCorrectList[this.correctAnswerNum] = true;
     },
-    explainUse(){
-      swal({
-        title: "説明"
-      })
-    },
-    // toUserEdit(){
-    //   this.email = firebase.auth().currentUser.email
-    //   this.isHideNum = 10;
-    // },
-    // toPassEdit(){
-    //   this.isHideNum = 11;
-    // },
-    // toEmailEdit(){
-    //   this.isHideNum = 12;
-    // },
-    alertLogout(){
+    alertLogout: function(){
 
       swal({
             title: 'ログアウトしますか？',
@@ -243,16 +228,16 @@ var vue = new Vue({
           });
 
     },
-    toSetting(){
+    toSetting: function(){
       this.isHideNum = 10;
     },
-    updateConfig(){
+    updateConfig: function(){
       if(0 < this.mainTitle.length && this.mainTitle.length < 31 && 4 < this.maxLimitTime && this.maxLimitTime < 301){
         sendConfig();
         this.updateAlart();
       }
     },
-    updateAlart(){
+    updateAlart: function(){
       swal({
           title: '更新しました',
           type: 'success'
