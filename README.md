@@ -7,23 +7,16 @@
 1. [使い方](#%E4%BD%BF%E3%81%84%E6%96%B9)
 
 # 概要
-バックエンドサービスにはFirebaseを利用しています。
-
-Firebaseとは、Googleが提供しているウェブアプリやモバイルアプリの開発プラットフォームです。
-
-アプリ開発に必要なバックエンドの様々な機能を提供してくれます。
-
-今回は下記の3つの機能を利用しました。
-+ Hosting
-
+バックエンドサービスにはFirebaseを利用しています。  
+Firebaseとは、Googleが提供しているウェブアプリやモバイルアプリの開発プラットフォームです。  
+本プロジェクトでは、Firebaseの提供する機能のうち下記の3つの機能を利用しました。
++ Hosting  
 Webサイトの配信サービス。web.appのドメインを最初から使用でき、HTTPSでの通信が可能。
 
-+ Realtime Database
-
++ Realtime Database  
 リアルタイムですべてのクライアントとデータの同期ができるデータベース。JSON形式でデータを保存する。JavaScriptを使って、データの読み込み・書き込みが非常に簡単にできる。
 
-+ Authentication
-
++ Authentication  
  認証機能。ログイン機能を簡単に実装可能。メールアドレスは勿論のこと、twitterやfacebookのアカウントを使ってログインすることができる。
 
 # 構成
@@ -49,18 +42,14 @@ Firebaseのプロジェクト作成からクイズ大会の開始までの流れ
 
 ## 2. Firebaseのプロジェクト作成
 
-Firebaseの[コンソール](https://console.firebase.google.com/u/0/)から新しいプロジェクトを作成する（要Googleアカウント）
-
-作成後、「ウェブアプリにFirebaseを追加」（</>のマーク）をクリックし、[アプリのニックネーム]を入力、「このアプリのFirebase Hostingも設定する」にチェック入れる（ここで表示されるプロジェクトIDを控える。）
-
-「登録」を押下する。残りの項目は「次へ」や「コンソールに戻る」でOK。
-
+Firebaseの[コンソール](https://console.firebase.google.com/u/0/)から新しいプロジェクトを作成する（要Googleアカウント）  
+作成後、「ウェブアプリにFirebaseを追加」（</>のマーク）をクリックし、[アプリのニックネーム]を入力、「このアプリのFirebase Hostingも設定する」にチェック入れる（ここで表示されるプロジェクトIDを控える。）  
+「登録」を押下する。残りの項目は「次へ」や「コンソールに戻る」でOK。  
 左のリストからRealtime Databaseを選択、ルールはどちらを選んでもOK。（後で書き換えるため）
 
 ## 3. Node.jsのインストール
 
-Node.jsをインストールする（インストール済みであれば不要）
-
+Node.jsをインストールする（インストール済みであれば不要）  
 <a>https://nodejs.org/ja/</a>
 
 
@@ -123,10 +112,8 @@ my-firebase-project
         index.html
 ```
 
-publicフォルダ内のファイルをすべて、1. でダウンロードしたファイルに置き換え
-
-my-firebase-project配下のdatabase.rules.jsonを、1. でダウンロードしたdatabase.rule.jsonに置き換える
-
+publicフォルダ内のファイルをすべて、1. でダウンロードしたファイルに置き換え  
+my-firebase-project配下のdatabase.rules.jsonを、1. でダウンロードしたdatabase.rule.jsonに置き換える  
 Node.js command promptでデプロイ
 
 ```
@@ -134,25 +121,19 @@ Node.js command promptでデプロイ
 firebase deploy
 ```
 
-Deploy complete!
-
-が表示されればOK
-
+Deploy complete!  
+が表示されればOK  
 Hosting URL: https://xxx.web.app と表示される（xxxの部分はプロジェクトID）。これがサイトのURL。
-
 
 ## 5. クイズ編集用のユーザを登録
 
-firebaseコンソールから「Authentication」に進む
-
-「Sign-in method」タブから「メール」を有効化
-
+firebaseコンソールから「Authentication」に進む  
+「Sign-in method」タブから「メール」を有効化  
 「Users」にて「ユーザーを追加」で適当なメールアドレスとパスワードを登録（firebaseに登録したアドレスでなくても可能）
 
 
 ## 6. クイズを編集
-https://xxx.web.app/generate.html にアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクトID）
-
+https://xxx.web.app/generate.html にアクセスし、5. のユーザーでログイン。（xxxの部分はプロジェクトID）  
 クイズの問題文などを編集し、「確定」ボタンをクリック。
 
 ## 7. 動作確認
