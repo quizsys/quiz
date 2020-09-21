@@ -108,8 +108,8 @@ my-firebase-project
 │  firebase.json
 │  
 └─public
-        404.html
-        index.html
+   │  404.html
+   └─ index.html
 ```
 
 publicフォルダ内のファイルをすべて、1. でダウンロードしたファイルに置き換え  
@@ -123,12 +123,12 @@ my-firebase-project
 │  firebase.json
 │  
 └─public
-        css/
-        img/
-        js/
-        index.html    ←置き換え
-        generate.html
-        result.html
+   │  css/
+   │  img/
+   │  js/
+   │  index.html    ←置き換え
+   │  generate.html
+   └─ result.html
 ```
 
 
