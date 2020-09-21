@@ -106,7 +106,7 @@ my-firebase-project
 │  .gitignore
 │  database.rules.json
 │  firebase.json
-
+│  
 └─public
         404.html
         index.html
@@ -114,6 +114,24 @@ my-firebase-project
 
 publicフォルダ内のファイルをすべて、1. でダウンロードしたファイルに置き換え  
 my-firebase-project配下のdatabase.rules.jsonを、1. でダウンロードしたdatabase.rule.jsonに置き換える  
+最終的に下記のフォルダ構成になればOK
+```
+my-firebase-project
+│  .firebaserc
+│  .gitignore
+│  database.rules.json  ←置き換え
+│  firebase.json
+│  
+└─public
+        css/
+        img/
+        js/
+        index.html    ←置き換え
+        generate.html
+        result.html
+```
+
+
 Node.js command promptでデプロイ
 
 ```
