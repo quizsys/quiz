@@ -161,6 +161,7 @@ https://xxx.web.app/generate.html にアクセスし、5. のユーザーでロ�
 # 利用ライブラリ・フレームワーク
 + jQuery
 + Bootstrap
++ MDBootstrap
 + promise
 + Sweetalert2
 + firebase.js
