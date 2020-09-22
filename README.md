@@ -157,3 +157,13 @@ https://xxx.web.app/generate.html にアクセスし、5. のユーザーでロ�
 ## 7. 動作確認
 
 確定ボタン押下後に表示される「出題者ページ」と「回答者ページ」のURLにアクセスし、表示内容を確認する
+
+# 利用ライブラリ・フレームワーク
++ jQuery
++ Bootstrap
++ promise
++ Sweetalert2
++ firebase.js
++ Vue.js
++ TweenMax
++ Toaster
